@@ -5,9 +5,16 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideos();
   loadTournaments();
 });
+const hmals = document.getElementById('home-matches-loading-spinner');
+const htrls = document.getElementById('home-transfers-loading-spinner');
+const hnels = document.getElementById('"home-news-loading-spinner');
+const hvils = document.getElementById('home-videos-loading-spinner');
+const htols = document.getElementById('home-tournaments-loading-spinner');
 
 // 1. تحميل المباريات
 async function loadMatches() {
+      hmals.style.display = 'flex';
+
   const container = document.getElementById("home-matches-container");
   try {
     const res = await fetch("https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=3:00");
@@ -27,11 +34,15 @@ const section = container.parentElement; // جايب السكشن الأب
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل المباريات</p>`;
     console.error("Matches Error:", err);
-  }
+  } finally {
+        hmals.style.display = 'none';
+    }
 }
 
 // 2. تحميل الانتقالات
 async function loadTransfers() {
+        htrls.style.display = 'flex';
+
   const container = document.getElementById("home-transfers-container");
   try {
     const res = await fetch("https://ko.best-goal.live/transation.php");
@@ -51,11 +62,15 @@ const section = container.parentElement; // جايب السكشن الأب
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الانتقالات</p>`;
     console.error("Transfers Error:", err);
-  }
+  } finally {
+        htrls.style.display = 'none';
+    }
 }
 
 // 3. تحميل الأخبار
 async function loadNews() {
+        hnels.style.display = 'flex';
+
   const container = document.getElementById("home-news-container");
   try {
     const res = await fetch("https://ko.best-goal.live/news.php");
@@ -74,11 +89,15 @@ const section = container.parentElement; // جايب السكشن الأب
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الأخبار</p>`;
     console.error("News Error:", err);
-  }
+  } finally {
+        hnels.style.display = 'none';
+    }
 }
 
 // 4. تحميل الفيديوهات
-async function loadVideos() {
+async function loadVideos() {     
+  hvils.style.display = 'flex';
+
   const container = document.getElementById("home-videos-container");
   try {
     const res = await fetch("https://ko.best-goal.live/videos.php");
@@ -98,11 +117,15 @@ const section = container.parentElement; // جايب السكشن الأب
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الفيديوهات</p>`;
     console.error("Videos Error:", err);
-  }
+  }finally {
+        hvils.style.display = 'none';
+    }
 }
 
 // 5. تحميل البطولات
 async function loadTournaments() {
+        htols.style.display = 'flex';
+
   const container = document.getElementById("home-tournaments-container");
   try {
     const res = await fetch("https://ko.best-goal.live/get.php");
@@ -122,7 +145,9 @@ const section = container.parentElement; // جايب السكشن الأب
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل البطولات</p>`;
     console.error("Tournaments Error:", err);
-  }
+  }finally {
+        htols.style.display = 'none';
+    }
 }
 
 // ---------- الكروت ----------
