@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 const hmals = document.getElementById('home-matches-loading-spinner');
 const htrls = document.getElementById('home-transfers-loading-spinner');
-const hnels = document.getElementById('"home-news-loading-spinner');
+const hnels = document.getElementById('home-news-loading-spinner');
 const hvils = document.getElementById('home-videos-loading-spinner');
 const htols = document.getElementById('home-tournaments-loading-spinner');
 
