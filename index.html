@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="light">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hantera TV</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        cairo: ['Cairo', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#1eafb2',
+                        secondary: '#4B5563',
+                        light: '#FFFFFF',
+                        dark: '#111827',
+                    },
+                },
+            },
+        };
+    </script>
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .dark body {
+            background-color: #111827;
+            color: #f9fafb;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-200 dark:bg-gray-900 text-gray-900 dark:text-gray-200">
+    <header
+        class="shadow-md sticky top-0 z-50 bg-gray-100 dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
+        <nav class="container max-w-6xl mx-auto flex flex-wrap md:flex-nowrap items-center justify-between p-4">
+            <div class="text-2xl font-bold text-primary">Hantera TV</div>
+            <ul id="main-nav" class="nav flex gap-4 text-sm md:text-base font-semibold bg-gray-100 dark:bg-gray-800">
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100 active"
+                        data-view="home-view">الصفحة الرئيسية</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="matches-view">المباريات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="transfers-view">آخر الانتقالات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="news-view">الأخبار</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="videos-view">الفيديوهات</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="tournaments-view">البطولات</a></li>
+            </ul>
+            <button id="theme-toggle"
+                class="fixed bottom-4 end-4 z-50 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full shadow-lg transition hover:scale-105">
+                <span id="theme-icon" class="text-xl">🌙</span>
+            </button>
+            <button id="drawer-toggle" class="drawer-toggle-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </nav>
+    </header>
+    <main class="container max-w-6xl mx-auto px-4">
+        <div id="home-view" class="view active p-4 space-y-6">
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <div class="flex justify-between items-center mb-4">
+                    <h2 class="text-xl font-bold text-primary">أهم مباريات اليوم</h2>
+                </div>
+                <div id="home-matches-container" class="space-y-4"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">آخر الانتقالات</h2>
+                <div id="home-transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                </div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">آخر الأخبار</h2>
+                <div id="home-news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">أحدث الفيديوهات</h2>
+                <div id="home-videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-10">
+                <h2 class="text-xl font-bold text-primary mb-4">البطولات</h2>
+                <div id="home-tournaments-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                </div>
+            </section>
+        </div>
+        <div id="matches-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <div class="flex flex-wrap justify-between items-center gap-4 mb-4">
+                <h2 class="text-lg font-bold text-primary">المباريات</h2>
+                <div class="matches-controls flex gap-2">
+                    <button id="yesterdayBtn"
+                        class="px-3 py-1 rounded border border-gray-400 text-gray-700 dark:text-gray-100 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition">أمس</button>
+                    <button id="todayBtn"
+                        class="px-3 py-1 rounded border border-gray-400 text-teal-700 font-bold dark:text-gray-100 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition">اليوم</button>
+                    <button id="tomorrowBtn"
+                        class="px-3 py-1 rounded border border-gray-400 text-gray-700 dark:text-gray-100 dark:border-gray-600 hover:bg-gray-100 dark:hover:bg-gray-800 transition">غداً</button>
+                    <input type="date" id="datePicker"
+                        class="px-2 py-1 border rounded text-sm bg-white dark:bg-gray-800 dark:border-gray-600 dark:text-white">
+                </div>
+            </div>
+            <div id="matches-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="matches-container"></div>
+        </div>
+        <div id="transfers-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">آخر الانتقالات</h1>
+            <div id="transfers-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="transfers-container"></div>
+        </div>
+        <div id="news-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">أحدث الأخبار</h1>
+            <div id="news-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="news-container"></div>
+            <div id="news-load-more-container" class="load-more-container mt-4 text-center"></div>
+        </div>
+        <div id="videos-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">أحدث الفيديوهات</h1>
+            <div id="videos-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="videos-container"></div>
+            <div id="videos-load-more-container" class="load-more-container mt-4 text-center"></div>
+        </div>
+        <div id="tournaments-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">البطولات</h1>
+            <div id="tournaments-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="tournaments-grid-container">
+                <div id="tournaments-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
+            </div>
+            <div id="standings-display-container" class="mt-4" style="display: none;"></div>
+        </div>
+        <div id="match-details-view"
+            class="view bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
+            <header
+                class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+                <h3 class="details-page-title text-xl font-bold">تفاصيل المباراة</h3>
+                <div class="flex items-center gap-4">
+                    <button
+                        class="back-btn text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base"
+                        id="backToMatchesBtn">العودة ←</button>
+                    <div id="details-tabs-menu-container" class="relative">
+                        <button id="details-tabs-drawer-btn"
+                            class="flex items-center gap-2 text-sm text-primary dark:text-teal-300 hover:text-primary-dark">
+                            <svg viewBox="0 0 100 80" width="20" height="20" class="fill-current">
+                                <rect width="100" height="15" rx="8"></rect>
+                                <rect y="30" width="100" height="15" rx="8"></rect>
+                                <rect y="60" width="100" height="15" rx="8"></rect>
+                            </svg>
+                            <span id="active-tab-title">التفاصيل</span>
+                        </button>
+                        <div id="details-tabs-menu"
+                            class="tabs-drawer absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-10 hidden">
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <div class="modal-match-card mb-6 bg-white dark:bg-gray-800" id="modalMatchCard"></div>
+            <nav class="details-tabs mb-6 border-b border-gray-200 dark:border-gray-700" id="details-tabs-container">
+            </nav>
+            <div class="tab-content" id="tab-content-container"></div>
+        </div>
+        <div id="news-article-view"
+            class="view bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
+            <header
+                class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
+                <h3 class="text-xl font-bold">تفاصيل الخبر</h3>
+                <button
+                    class="back-btn text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base"
+                    id="backToNewsBtn">العودة ←</button>
+            </header>
+            <div id="news-article-content" class="article-content-wrapper"></div>
+        </div>
+    </main>
+    <div class="modal-overlay" id="videoPlayerModal">
+        <div class="modal-content video-modal-content">
+            <header class="modal-header video-modal-header">
+                <button class="modal-close-btn">&times;</button>
+            </header>
+            <div class="video-iframe-container">
+                <iframe id="videoPlayerIframe" src="about:blank" frameborder="0" allow="autoplay; encrypted-media"
+                    allowfullscreen></iframe>
+            </div>
+        </div>
+    </div>
+    <div class="modal-overlay" id="adminModal">
+        <div class="modal-content bg-white dark:bg-gray-900">
+            <header class="modal-header">
+                <h3>إدارة سيرفرات البث</h3>
+                <button class="modal-close-btn">&times;</button>
+            </header>
+            <div class="admin-panel">
+                <div id="admin-password-section">
+                    <p class="mb-2">الرجاء إدخال كلمة المرور</p>
+                    <input type="password" id="admin-password-input" class="bg-white dark:bg-gray-900 border"
+                        placeholder="كلمة المرور">
+                    <button id="admin-login-btn">دخول</button>
+                </div>
+                <div id="admin-content-section" style="display: none;">
+                    <h4 id="form-title" class="mb-2">إضافة سيرفر جديد</h4>
+                    <form id="add-stream-form">
+                        <input type="hidden" id="stream-id">
+                        <input type="text" id="stream-name" class="bg-white dark:bg-gray-900 border"
+                            placeholder="اسم القناة (مثال: القناة 1)" required>
+                        <select id="stream-type" class="bg-white dark:bg-gray-900 border" required>
+                            <option value="hls">HLS (m3u8)</option>
+                            <option value="dash">DASH (mpd)</option>
+                            <option value="dash-drm">DASH + DRM</option>
+                        </select>
+                        <input type="url" id="stream-url" class="bg-white dark:bg-gray-900 border"
+                            placeholder="رابط البث" required>
+                        <div id="drm-fields" style="display: none; flex-direction: column; gap: 10px;">
+                            <input type="text" id="stream-key-id" placeholder="Key ID">
+                            <input type="text" id="stream-key" placeholder="Key">
+                        </div>
+                        <div class="form-buttons">
+                            <button type="submit" id="save-stream-btn">حفظ السيرفر</button>
+                            <button type="button" id="cancel-edit-btn" style="display: none;">إلغاء التعديل</button>
+                        </div>
+                    </form>
+                    <hr>
+                    <h4>السيرفرات الحالية</h4>
+                    <div id="current-streams-list">لا توجد سيرفرات حاليًا.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 mt-16 border-t dark:border-gray-700">
+        <div class="max-w-6xl mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <h4 class="font-bold text-primary mb-2">عن الموقع</h4>
+                <p class="text-sm leading-relaxed">Hantera TV هو موقع يقدم تغطية شاملة لأهم المباريات، الأخبار،
+                    الفيديوهات والبطولات الرياضية.</p>
+            </div>
+            <div>
+                <h4 class="font-bold text-primary mb-2">روابط سريعة</h4>
+                <ul class="space-y-1 text-sm">
+                    <li><a href="#" data-view="home-view" class="hover:text-primary">الرئيسية</a></li>
+                    <li><a href="#" data-view="matches-view" class="hover:text-primary">المباريات</a></li>
+                    <li><a href="#" data-view="news-view" class="hover:text-primary">الأخبار</a></li>
+                </ul>
+            </div>
+            <div>
+                <h4 class="font-bold text-primary mb-2">تابعنا</h4>
+                <div class="flex gap-4">
+                    <a href="#" class="hover:text-primary">فيسبوك</a>
+                    <a href="#" class="hover:text-primary">تويتر</a>
+                    <a href="#" class="hover:text-primary">يوتيوب</a>
+                </div>
+            </div>
+        </div>
+        <div class="text-center py-4 text-xs text-gray-400 dark:text-gray-500">© 2025 Hantera TV. جميع الحقوق محفوظة.
+        </div>
+    </footer>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/home.js"></script>
+    <script>
+        const toggleBtn = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+
+        toggleBtn.addEventListener('click', () => {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            if (html.classList.contains('dark')) {
+                localStorage.setItem('theme', 'dark');
+                themeIcon.textContent = '🌞';
+            } else {
+                localStorage.setItem('theme', 'light');
+                themeIcon.textContent = '🌙';
+            }
+        });
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme === 'dark') {
+                document.documentElement.classList.add('dark');
+                themeIcon.textContent = '🌞';
+            } else {
+                document.documentElement.classList.remove('dark');
+                themeIcon.textContent = '🌙';
+            }
+        });
+
+    </script>
+</body>
+
+</html>
