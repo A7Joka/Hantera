@@ -73,26 +73,44 @@
     <main class="container max-w-6xl mx-auto px-4">
         <div id="home-view" class="view active p-4 space-y-6">
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
-                <div class="flex justify-between items-center mb-4">
-                    <h2 class="text-xl font-bold text-primary">أهم مباريات اليوم</h2>
+                <h2 class="text-xl font-bold text-primary mb-4">أهم مباريات اليوم</h2>
+                <div id="home-matches-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
                 </div>
                 <div id="home-matches-container" class="space-y-4"></div>
             </section>
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
                 <h2 class="text-xl font-bold text-primary mb-4">آخر الانتقالات</h2>
+                <div id="home-transfers-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
                 <div id="home-transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                 </div>
             </section>
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
                 <h2 class="text-xl font-bold text-primary mb-4">آخر الأخبار</h2>
+                <div id="home-news-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
                 <div id="home-news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
             </section>
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
                 <h2 class="text-xl font-bold text-primary mb-4">أحدث الفيديوهات</h2>
+                <div id="home-videos-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
                 <div id="home-videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
             </section>
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-10">
                 <h2 class="text-xl font-bold text-primary mb-4">البطولات</h2>
+                <div id="home-tournaments-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
                 <div id="home-tournaments-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                 </div>
             </section>
