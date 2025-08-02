@@ -302,13 +302,13 @@ function renderLineup(lineup, match) {
 function renderEvents(events) {
     const panel = document.getElementById('tab-events');
     if (!events || events.length === 0) { panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>"; return; }
-    panel.innerHTML = `<div class="events-container"><div class="timeline-line"></div>${events.map(event => {
+    panel.innerHTML = `<div class="events-container"><div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>${events.map(event => {
         let extraPlayerHTML = '';
         if (event['Event-Player'].Extra.length > 0) {
             const prefix = event['Event-Name'] === 'هدف' ? 'صناعة: ' : '';
             extraPlayerHTML = `<div class="event-assist">${prefix}${event['Event-Player'].Extra[0].Name}</div>`;
         }
-        return `<div class="event-item ${event.Place}"><div class="event-details"><img src="${event['Event-Logo']}" class="event-icon" alt=""><div><div class="player-name">${event['Event-Player'].Name}</div>${extraPlayerHTML}</div></div><div class="event-time">${event['Event-Time']}</div></div>`.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>').replace(/<\/div>$/, `${event.Place === 'left' ? '<div style="width:45%"></div>' : ''}</div>`);
+        return `<div class="event-item ${event.Place}"><div class="event-details"><img src="${event['Event-Logo']}" class="event-icon" alt=""><div><div class="player-name">${event['Event-Player'].Name}</div>${extraPlayerHTML}</div></div><div class="event-time bg-gray-200 dark:bg-gray-900">${event['Event-Time']}</div></div>`.replace(/^<div class="event-item right">/, '<div class="event-item right"><div style="width:45%"></div>').replace(/<\/div>$/, `${event.Place === 'left' ? '<div style="width:45%"></div>' : ''}</div>`);
     }).join('')}</div>`;
 }
 
@@ -872,5 +872,6 @@ currentStreamsList.addEventListener('click', async (e) => {
 
 // --- INITIAL LOAD ---
 fetchMatches(formatDateToString(new Date()));
+
 
 
