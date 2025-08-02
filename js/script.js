@@ -589,8 +589,8 @@ async function openAdminModal(matchId) {
 function showMatchDetailsPage(match) {
     modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
     
-    detailsTabsContainer.innerHTML = '<button class="tab-btn" data-tab="info">التفاصيل</button><button class="tab-btn" data-tab="lineup">التشكيلة</button><button class="tab-btn" data-tab="events">الأحداث</button><button class="tab-btn" data-tab="stats">الإحصائيات</button>';
-    detailsTabsMenu.innerHTML = '<button class="tab-btn" data-action="back">&larr; العودة للمباريات</button><button class="tab-btn" data-tab="info">التفاصيل</button><button class="tab-btn" data-tab="lineup">التشكيلة</button><button class="tab-btn" data-tab="events">الأحداث</button><button class="tab-btn" data-tab="stats">الإحصائيات</button>';
+    detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
+    detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-action="back">&larr; العودة للمباريات</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
     tabContentContainer.innerHTML = '<div id="tab-info" class="tab-panel"></div><div id="tab-lineup" class="tab-panel"></div><div id="tab-events" class="tab-panel"></div><div id="tab-stats" class="tab-panel"></div>';
 
     document.querySelector('#details-tabs-container .tab-btn[data-tab="info"]').classList.add('active');
@@ -872,3 +872,4 @@ currentStreamsList.addEventListener('click', async (e) => {
 
 // --- INITIAL LOAD ---
 fetchMatches(formatDateToString(new Date()));
+
