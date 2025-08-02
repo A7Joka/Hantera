@@ -1178,6 +1178,9 @@ header ul li a.active {
 }
 
 @media (max-width: 500px) {
+    .cup-name{
+        font-size: 0.7rem;
+    }
     #formattedDate{
         font-size: 0.6rem;
     }
@@ -1339,4 +1342,5 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
+
 
