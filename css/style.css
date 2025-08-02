@@ -1,16 +1,3 @@
-:root {
-    --primary-color: #1eafb2;
-    --secondary-color: #1db954;
-    --team1-color: #3498db;
-    --team2-color: #9b59b6;
-    --background-color: #f0f2f5;
-    --card-background: #ffffff;
-    --text-color: #333;
-    --text-light-color: #666;
-    --border-color: #e8e8e8;
-    --border-radius: 10px;
-}
-
 * {
     box-sizing: border-box;
     margin: 0;
@@ -30,9 +17,6 @@ body.drawer-open {
 }
 
 .container {
-    width: 70%;
-    max-width: 800px;
-    margin: 0 auto;
     padding: 15px 0;
 }
 
@@ -42,7 +26,7 @@ header {
     position: sticky;
     top: 0;
     z-index: 1000;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #e8e8e8;
 }
 
 header nav {
@@ -67,7 +51,6 @@ header ul {
 
 header ul li a {
     text-decoration: none;
-    color: var(--text-color);
     padding: 8px 12px;
     font-weight: 600;
     font-size: 0.95rem;
@@ -77,12 +60,12 @@ header ul li a {
 }
 
 header ul li a:hover {
-    background-color: #f0f2f5;
+    background-color: #aaaaaa94;
 
 }
 
 header ul li a.active {
-    background-color: var(--primary-color);
+    background-color: #1eafb2;
     color: white;
 }
 
@@ -107,11 +90,9 @@ header ul li a.active {
 
 .page-title {
     font-size: 2rem;
-
     margin-bottom: 25px;
     text-align: center;
 }
-
 
 .match-card {
     border-radius: 14px;
@@ -153,8 +134,6 @@ header ul li a.active {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
-
-
 .match-card>.match-body:last-of-type {
     border-bottom: none;
 }
@@ -179,7 +158,6 @@ header ul li a.active {
     font-weight: 600;
     font-size: 1rem;
     text-align: center;
-    color: var(--text-color);
 }
 
 .part-center {
@@ -244,10 +222,8 @@ header ul li a.active {
     justify-content: center;
     align-items: center;
     min-height: 58px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #e8e8e8;
 }
-
-
 
 .news-card {
     cursor: pointer;
@@ -258,7 +234,7 @@ header ul li a.active {
 .tournament-card,
 .transfer-card {
 
-    border-radius: var(--border-radius);
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     display: flex;
@@ -356,7 +332,7 @@ header ul li a.active {
 .news-time,
 .video-category {
     font-size: 0.8rem;
-    color: var(--secondary-color);
+    color: #1db954;
     font-weight: 600;
 }
 
@@ -379,7 +355,7 @@ header ul li a.active {
     height: 60px;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid var(--border-color);
+    border: 3px solid #e8e8e8;
     flex-shrink: 0;
 }
 
@@ -393,13 +369,13 @@ header ul li a.active {
 }
 
 .transfer-player-position {
-    color: var(--text-light-color);
+    color: #666;;;
     font-size: 0.7rem;
 }
 
 .transfer-badge {
     font-size: 0.7rem;
-    background-color: var(--team1-color);
+    background-color: #3498db;
     color: white;
     padding: 3px 10px;
     border-radius: 15px;
@@ -407,7 +383,7 @@ header ul li a.active {
 }
 
 .transfer-badge.free {
-    background-color: var(--secondary-color);
+    background-color: #1db954;
 }
 
 .transfer-clubs-section {
@@ -433,7 +409,7 @@ header ul li a.active {
 
 .transfer-arrow {
     font-size: 1.8rem;
-    color: var(--text-light-color);
+    color: #666;;;
     font-weight: bold;
 }
 
@@ -441,8 +417,8 @@ header ul li a.active {
     width: 100%;
     text-align: center;
     font-size: 0.7rem;
-    color: var(--text-light-color);
-    border-top: 1px solid var(--border-color);
+    color: #666;;
+    border-top: 1px solid #e8e8e8;
     padding-top: 10px;
     margin-top: 10px;
 }
@@ -490,7 +466,7 @@ header ul li a.active {
 }
 
 .back-to-grid-btn {
-    border: 1px solid var(--border-color);
+    border: 1px solid #e8e8e8;
     padding: 8px 16px;
     border-radius: 8px;
     font-family: 'Cairo', sans-serif;
@@ -509,13 +485,13 @@ header ul li a.active {
     margin-top: 25px;
     margin-bottom: 15px;
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--secondary-color);
+    border-bottom: 2px solid #1db954;
 }
 
 .standings-table {
     width: 100%;
     border-collapse: collapse;
-    border-radius: var(--border-radius);
+    border-radius: 10px;
     overflow: hidden;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
     font-size: 0.9rem;
@@ -525,11 +501,11 @@ header ul li a.active {
 .standings-table td {
     padding: 12px 8px;
     text-align: center;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .standings-table thead {
-    background-color: var(--primary-color);
+    background-color: #1eafb2;
     color: white;
 }
 
@@ -569,7 +545,7 @@ header ul li a.active {
     align-items: center;
     padding: 10px 15px;
     position: relative;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .details-page-title {
@@ -591,10 +567,6 @@ header ul li a.active {
     z-index: 5;
 }
 
-.back-btn:hover {
-    background-color: rgba(255, 255, 255, 0.15);
-}
-
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -611,11 +583,10 @@ header ul li a.active {
 }
 
 .modal-content {
-    background: var(--background-color);
     width: 95%;
     max-width: 800px;
     max-height: 90vh;
-    border-radius: var(--border-radius);
+    border-radius: 10px;
     overflow: hidden;
     display: flex;
     flex-direction: column;
@@ -663,7 +634,7 @@ header ul li a.active {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: var(--primary-color);
+    background-color: #1eafb2;
 }
 
 .video-modal-content .video-modal-header {
@@ -691,7 +662,7 @@ header ul li a.active {
     align-items: center;
     width: 100%;
     padding: 10px 0;
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid #e8e8e8;
 }
 
 .modal-team {
@@ -739,8 +710,8 @@ header ul li a.active {
 }
 
 .tab-btn.active {
-    color: var(--secondary-color);
-    border-bottom-color: var(--secondary-color);
+    color: #1db954;
+    border-bottom-color: #1db954;
 }
 
 .tab-content {
@@ -779,7 +750,7 @@ header ul li a.active {
     text-align: center;
     font-weight: 700;
     font-size: 0.95rem;
-    color: var(--text-light-color);
+    color: #666;;
 }
 
 .stat-name {
@@ -826,7 +797,7 @@ header ul li a.active {
 
 .lineup-header {
     padding-bottom: 10px;
-    border-bottom: 2px solid var(--border-color);
+    border-bottom: 2px solid #e8e8e8;
     margin-bottom: 15px;
 }
 
@@ -837,7 +808,7 @@ header ul li a.active {
 
 .lineup-formation {
     font-size: 0.9rem;
-    color: var(--text-light-color);
+    color: #666;;
 }
 
 .lineup-section-title {
@@ -857,7 +828,7 @@ header ul li a.active {
     height: 30px;
     border-radius: 50%;
     object-fit: cover;
-    border: 1px solid var(--border-color);
+    border: 1px solid #e8e8e8;
 }
 
 .player-name {
@@ -875,7 +846,7 @@ header ul li a.active {
     bottom: 0;
     right: 50%;
     width: 2px;
-    background-color: var(--border-color);
+    background-color: #e8e8e8;
     transform: translateX(1px);
 }
 
@@ -905,7 +876,7 @@ header ul li a.active {
 
 .event-assist {
     font-size: 0.8rem;
-    color: var(--text-light-color);
+    color: #666;;
 }
 
 .event-icon {
@@ -913,7 +884,7 @@ header ul li a.active {
     height: 30px;
     margin: 10px;
     padding: 5px;
-    background: var(--primary-color);
+    background: #1eafb2;
     border-radius: 10px;
 }
 
@@ -950,7 +921,7 @@ header ul li a.active {
 
 .info-label {
     font-weight: 700;
-    color: var(--text-light-color);
+    color: #666;;
 }
 
 .info-value {
@@ -965,7 +936,7 @@ header ul li a.active {
 
 .spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid var(--primary-color);
+    border-top: 4px solid #1eafb2;
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -1011,7 +982,7 @@ header ul li a.active {
 #admin-password-section input,
 #admin-password-section button {
     padding: 10px;
-    border: 1px solid var(--border-color);
+    border: 1px solid #e8e8e8;
     border-radius: 8px;
     font-family: 'Cairo';
     font-size: 1rem;
@@ -1020,7 +991,7 @@ header ul li a.active {
 
 #add-stream-form button,
 #admin-login-btn {
-    background-color: var(--primary-color);
+    background-color: #1eafb2;
     color: white;
     cursor: pointer;
     border: none;
@@ -1028,7 +999,7 @@ header ul li a.active {
 }
 
 #cancel-edit-btn {
-    background-color: var(--text-light-color);
+    background-color: #666;;
 }
 
 #admin-login-btn {
@@ -1072,7 +1043,7 @@ header ul li a.active {
 }
 
 .stream-button {
-    background-color: var(--secondary-color);
+    background-color: #1db954;
     color: white;
     padding: 10px 20px;
     border: none;
@@ -1128,8 +1099,7 @@ header ul li a.active {
     width: 100%;
     text-align: right;
     padding: 12px 20px;
-    border-bottom: 1px solid var(--border-color);
-    color: var(--text-color);
+    border-bottom: 1px solid #e8e8e8;
     font-family: 'Cairo', sans-serif;
 }
 
@@ -1153,7 +1123,7 @@ header ul li a.active {
 }
 
 .load-more-btn {
-    background-color: var(--primary-color);
+    background-color: #1eafb2;
     color: white;
     border: none;
     padding: 12px 35px;
@@ -1195,7 +1165,7 @@ header ul li a.active {
     height: auto;
     max-height: 400px;
     object-fit: cover;
-    border-radius: var(--border-radius);
+    border-radius: 10px;
     margin-bottom: 25px;
 }
 
@@ -1323,7 +1293,7 @@ header ul li a.active {
     .drawer-toggle-btn span {
         width: 30px;
         height: 3px;
-        background-color: var(--primary-color);
+        background-color: #1eafb2;
         border-radius: 5px;
         transition: all 0.3s ease-in-out;
     }
@@ -1341,7 +1311,7 @@ header ul li a.active {
     }
 
     .details-page-header .details-page-title,
-    .details-page-header .back-btn {
+    .details-page-header {
         display: none;
     }
 
