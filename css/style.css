@@ -569,6 +569,7 @@ header ul li a.active {
     align-items: center;
     padding: 10px 15px;
     position: relative;
+    border-bottom: 1px solid var(--border-color);
 }
 
 .details-page-title {
