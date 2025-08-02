@@ -169,7 +169,7 @@
         </div>
         <div id="match-details-view"
             class="view bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
-            <header
+            <div
                 class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
                 <h3 class="details-page-title text-xl font-bold text-gray-800 dark:text-gray-100">تفاصيل المباراة</h3>
                 <div class="flex items-center gap-4">
@@ -179,7 +179,8 @@
                     <div id="details-tabs-menu-container" class="relative">
                         <button id="details-tabs-drawer-btn"
                             class="flex items-center gap-2 text-sm text-primary dark:text-teal-300 hover:text-primary-dark">
-                            <svg viewBox="0 0 100 80" width="20" height="20" class="fill-current text-gray-800 dark:text-gray-100">
+                            <svg viewBox="0 0 100 80" width="20" height="20"
+                                class="fill-current text-gray-800 dark:text-gray-100">
                                 <rect width="100" height="15" rx="8"></rect>
                                 <rect y="30" width="100" height="15" rx="8"></rect>
                                 <rect y="60" width="100" height="15" rx="8"></rect>
@@ -191,7 +192,7 @@
                         </div>
                     </div>
                 </div>
-            </header>
+            </div>
             <div class="modal-match-card mb-6 bg-white dark:bg-gray-800" id="modalMatchCard"></div>
             <nav class="details-tabs mb-6 border-b border-gray-200 dark:border-gray-700" id="details-tabs-container">
             </nav>
@@ -199,13 +200,13 @@
         </div>
         <div id="news-article-view"
             class="view bg-white dark:bg-gray-900 text-gray-900 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
-            <header
+            <div
                 class="details-page-header flex items-center justify-between mb-6 border-b border-gray-300 dark:border-gray-700 pb-4">
                 <h3 class="text-xl font-bold">تفاصيل الخبر</h3>
                 <button
                     class="back-btn text-primary dark:text-teal-300 font-medium hover:underline text-sm md:text-base"
                     id="backToNewsBtn">العودة ←</button>
-            </header>
+            </div>
             <div id="news-article-content" class="article-content-wrapper"></div>
         </div>
     </main>
