@@ -1178,6 +1178,9 @@ header ul li a.active {
 }
 
 @media (max-width: 500px) {
+    #formattedDate{
+        font-size: 0.6rem;
+    }
     .match-part {
         padding: 8px;
         height: 100%;
@@ -1336,3 +1339,4 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
+
