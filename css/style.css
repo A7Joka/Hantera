@@ -248,14 +248,6 @@ header ul li a.active {
 }
 
 
-#news-container,
-#videos-container,
-#tournaments-grid,
-#transfers-container {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 20px;
-}
 
 .news-card {
     cursor: pointer;
@@ -396,22 +388,22 @@ header ul li a.active {
 }
 
 .transfer-player-name {
-    font-weight: 700;
-    font-size: 1.2rem;
+    font-weight: 500;
+    font-size: 0.9rem;
 }
 
 .transfer-player-position {
     color: var(--text-light-color);
-    font-size: 0.9rem;
+    font-size: 0.7rem;
 }
 
 .transfer-badge {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
     background-color: var(--team1-color);
     color: white;
     padding: 3px 10px;
     border-radius: 15px;
-    font-weight: 600;
+    font-weight: 500;
 }
 
 .transfer-badge.free {
@@ -440,7 +432,7 @@ header ul li a.active {
 }
 
 .transfer-arrow {
-    font-size: 2rem;
+    font-size: 1.8rem;
     color: var(--text-light-color);
     font-weight: bold;
 }
@@ -448,7 +440,7 @@ header ul li a.active {
 .transfer-footer {
     width: 100%;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.7rem;
     color: var(--text-light-color);
     border-top: 1px solid var(--border-color);
     padding-top: 10px;
@@ -698,7 +690,6 @@ header ul li a.active {
     align-items: center;
     width: 100%;
     padding: 10px 0;
-
     border-bottom: 1px solid var(--border-color);
 }
 
@@ -719,12 +710,12 @@ header ul li a.active {
 }
 
 .modal-team-name {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
 }
 
 .modal-match-score {
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: 700;
 }
 
@@ -776,8 +767,6 @@ header ul li a.active {
     align-items: center;
     justify-content: space-between;
     padding: 10px 12px;
-
-    border: 1px solid var(--border-color);
     border-radius: 8px;
     flex-wrap: wrap;
     border-left: 4px solid transparent;
@@ -934,7 +923,6 @@ header ul li a.active {
     background-color: #f7f9fc;
     padding: 2px 8px;
     border-radius: 5px;
-    border: 1px solid var(--border-color);
     font-weight: 700;
     font-size: 0.9rem;
 }
@@ -1109,10 +1097,6 @@ header ul li a.active {
     gap: 8px;
 }
 
-#details-tabs-drawer-btn svg {
-    fill: white;
-}
-
 #active-tab-title {
     font-weight: 700;
     font-size: 1.1rem;
@@ -1153,7 +1137,7 @@ header ul li a.active {
 }
 
 .tabs-drawer .tab-btn[data-action="back"] {
-    background-color: #f0f2f5;
+    
     font-weight: 700;
 }
 
@@ -1260,6 +1244,31 @@ header ul li a.active {
         font-size: 0.45rem;
         font-weight: 400;
 
+    }
+
+    .modal-team-logo {
+        width: 30px;
+        height: 30px;
+    }
+
+    .modal-team-name {
+        font-size: 0.7rem;
+        font-weight: 600;
+    }
+
+    .modal-match-score {
+        font-size: 1.05rem;
+        font-weight: 600;
+    }
+
+    .info-label {
+        font-weight: 600;
+        font-size: 0.9rem;
+    }
+
+    .info-value {
+        font-weight: 500;
+        font-size: 0.8rem;
     }
 }
 
