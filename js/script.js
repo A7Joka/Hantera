@@ -636,7 +636,7 @@ mainNav.addEventListener('click', (e) => {
         e.target.classList.add('active');
         views.forEach(view => view.classList.remove('active'));
         document.getElementById(targetViewId).classList.add('active');
-        
+        if (targetViewId === 'news-view' && allNewsData.length === 0) fetchNews();
         if(mainNav.classList.contains('open')) {
             mainNav.classList.remove('open');
             drawerToggle.classList.remove('open');
@@ -881,5 +881,6 @@ export {
   displayStandings,
   showNewsArticle
 };
+
 
 
