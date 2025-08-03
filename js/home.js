@@ -1,9 +1,3 @@
-import {
-  showMatchDetailsPage,
-  displayStandings,
-  showNewsArticle
-} from 'script.js';
-
 document.addEventListener("DOMContentLoaded", () => {
   loadMatches();
   loadTransfers();
@@ -11,6 +5,11 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideos();
   loadTournaments();
 });
+import {
+  showMatchDetailsPage,
+  displayStandings,
+  showNewsArticle
+} from './script.js';
 let alllMatchesData = [];
 let alllNewsData = [];
 let alllTournamentsData = [];
