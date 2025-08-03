@@ -3,8 +3,9 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 function loadAllData() {
   setTimeout(() => fetchTransfers(), 100);
-  setTimeout(() => fetchVideos(), 300);
-  setTimeout(() => fetchTournaments(), 500);
+  setTimeout(() => fetchVideos(), 500);
+  setTimeout(() => fetchTournaments(), 1000);
+  setTimeout(() => fetchNews(), 1500);
 }
 
 // FINAL STABLE VERSION - PART 1 of 4
@@ -881,6 +882,7 @@ export {
   displayStandings,
   showNewsArticle
 };
+
 
 
 
