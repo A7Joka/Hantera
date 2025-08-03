@@ -42,6 +42,8 @@ container.innerHTML = `<p style="text-align:center;">لا توجد مباريا�
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "matches-view"));
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
+      e.preventDefault();
+      switchView("matches-view");
       const matchBody = e.target.closest('.match-body');
       if (matchBody) {
         const matchId = matchBody.dataset.matchId;
@@ -71,7 +73,7 @@ const container = document.getElementById("home-transfers-container");
       container.appendChild(card);
     });
     if (!transfers || transfers.length === 0) {
-        transfersContainer.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
+        Container.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
         return;
     }
     const section = container.parentElement;
@@ -108,6 +110,8 @@ const container = document.getElementById("home-news-container");
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "news-view"));
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
+      e.preventDefault();
+    switchView("news-view");
       const newsCard = e.target.closest('.news-card');
       if (newsCard) {
         const newsIndex = newsCard.dataset.newsIndex;
@@ -144,6 +148,8 @@ const container = document.getElementById("home-videos-container");
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "videos-view"));
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
+      e.preventDefault();
+    switchView("videos-view");
       const videoCard = e.target.closest('.video-card');
       if (videoCard) {
         const m3u8Url = videoCard.dataset.m3u8Url;
@@ -182,6 +188,8 @@ alllTournamentsData = tournaments;
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "tournaments-view"));
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
+      e.preventDefault();
+    switchView("tournaments-view");
       const card = e.target.closest('.tournament-card');
       if (card) {
         const index = card.dataset.index;
