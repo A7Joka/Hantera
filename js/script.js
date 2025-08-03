@@ -872,8 +872,8 @@ currentStreamsList.addEventListener('click', async (e) => {
 
 // --- INITIAL LOAD ---
 fetchMatches(formatDateToString(new Date()));
-
-
-
-
-
+export {
+  showMatchDetailsPage,
+  displayStandings,
+  showNewsArticle
+};
