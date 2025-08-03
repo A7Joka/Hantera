@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   loadVideos();
   loadTournaments();
 });
+let alllMatchesData = [];
+let alllNewsData = [];
+let alllTournamentsData = [];
 const hmals = document.getElementById('home-matches-loading-spinner');
 const htrls = document.getElementById('home-transfers-loading-spinner');
 const hnels = document.getElementById('home-news-loading-spinner');
@@ -19,13 +22,13 @@ const container = document.getElementById("home-matches-container");
     const res = await fetch("https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=3:00");
     const json = await res.json();
     const matches = json["STING-WEB-Matches"].slice(0, 5);
-
+    alllMatchesData = matches;
     matches.forEach(match => {
       const card = createMatchCard(match);
       container.appendChild(card);
     });
     if (!matches || matches.length === 0) {
-      matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
+container.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
       return;
     }
     const section = container.parentElement;
@@ -37,7 +40,7 @@ const container = document.getElementById("home-matches-container");
       const matchBody = e.target.closest('.match-body');
       if (matchBody) {
         const matchId = matchBody.dataset.matchId;
-        const matchData = allMatchesData.find(m => m['Match-id'] == matchId);
+        const matchData = alllMatchesData.find(m => m['Match-id'] == matchId);
         if (matchData) showMatchDetailsPage(matchData);
       }
     });
@@ -88,6 +91,7 @@ const container = document.getElementById("home-news-container");
     const res = await fetch("https://ko.best-goal.live/news.php");
     const data = await res.json();
     const news = data.slice(0, 3);
+    alllNewsData = news;
 
     news.forEach(article => {
       const card = createNewsCard(article);
@@ -102,7 +106,7 @@ const container = document.getElementById("home-news-container");
       const newsCard = e.target.closest('.news-card');
       if (newsCard) {
         const newsIndex = newsCard.dataset.newsIndex;
-        const article = allNewsData[newsIndex];
+        const article = alllNewsData[newsIndex];
         if (article) {
           showNewsArticle(article);
         }
@@ -161,6 +165,7 @@ const container = document.getElementById("home-tournaments-container");
     const res = await fetch("https://ko.best-goal.live/get.php");
     const json = await res.json();
     const tournaments = json.data.slice(0, 3);
+alllTournamentsData = tournaments;
 
     tournaments.forEach(tournament => {
       const card = createTournamentCard(tournament);
@@ -175,7 +180,7 @@ const container = document.getElementById("home-tournaments-container");
       const card = e.target.closest('.tournament-card');
       if (card) {
         const index = card.dataset.index;
-        displayStandings(allTournamentsData[index]);
+        displayStandings(alllTournamentsData[index]);
       }
     });
 
