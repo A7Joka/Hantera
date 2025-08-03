@@ -1,3 +1,14 @@
+document.addEventListener("DOMContentLoaded", () => {
+  loadAllData();
+});
+function loadAllData() {
+  fetchMatches(); 
+  setTimeout(() => fetchTransfers(), 100);
+  setTimeout(() => fetchNews(), 200);
+  setTimeout(() => fetchVideos(), 300);
+  setTimeout(() => fetchTournaments(), 400);
+}
+
 // FINAL STABLE VERSION - PART 1 of 4
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, collection, getDocs, addDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -628,11 +639,6 @@ mainNav.addEventListener('click', (e) => {
         views.forEach(view => view.classList.remove('active'));
         document.getElementById(targetViewId).classList.add('active');
         
-        if (targetViewId === 'news-view' && allNewsData.length === 0) fetchNews();
-        if (targetViewId === 'videos-view' && allVideosData.length === 0) fetchVideos();
-        if (targetViewId === 'tournaments-view') fetchTournaments();
-        if (targetViewId === 'transfers-view') fetchTransfers();
-        
         if(mainNav.classList.contains('open')) {
             mainNav.classList.remove('open');
             drawerToggle.classList.remove('open');
@@ -877,3 +883,4 @@ export {
   displayStandings,
   showNewsArticle
 };
+
