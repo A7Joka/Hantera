@@ -1,3 +1,9 @@
+import {
+  showMatchDetailsPage,
+  displayStandings,
+  showNewsArticle
+} from 'script.js';
+
 document.addEventListener("DOMContentLoaded", () => {
   loadMatches();
   loadTransfers();
@@ -318,54 +324,4 @@ function switchView(viewId) {
   if (targetLink) {
     targetLink.classList.add('active');
   }
-}
-function showMatchDetailsPage(match) {
-    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
-    
-    detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
-    detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
-    tabContentContainer.innerHTML = '<div id="tab-info" class="tab-panel"></div><div id="tab-lineup" class="tab-panel"></div><div id="tab-events" class="tab-panel"></div><div id="tab-stats" class="tab-panel"></div>';
-
-    document.querySelector('#details-tabs-container .tab-btn[data-tab="info"]').classList.add('active');
-    document.querySelector('#details-tabs-menu .tab-btn[data-tab="info"]').classList.add('active');
-    document.getElementById('tab-info').classList.add('active');
-    activeTabTitle.textContent = "التفاصيل";
-    
-    views.forEach(view => view.classList.remove('active'));
-    matchDetailsView.classList.add('active');
-    window.scrollTo(0, 0);
-
-    matchDetailsView.dataset.matchId = match['Match-id'];
-    fetchEventsAndLineup(match);
-}
-
-function showNewsArticle(article) {
-    newsArticleContent.innerHTML = `
-        <h1 class="article-title">${article.title}</h1>
-        <img src="${article.image}" alt="${article.title}" class="article-image">
-        <div class="article-body">${article.content}</div>
-    `;
-    views.forEach(view => view.classList.remove('active'));
-    newsArticleView.classList.add('active');
-    window.scrollTo(0, 0);
-}
-
-function displayStandings(tournament) {
-    window.scrollTo(0, 0);
-    tournamentsGridContainer.style.display = 'none';
-    standingsDisplayContainer.style.display = 'block';
-    let tablesHTML = '';
-    if (!tournament.standings || tournament.standings.length === 0) {
-        tablesHTML = "<p style='text-align:center; margin-top: 20px;'>لا يوجد ترتيب لهذه البطولة حاليًا.</p>";
-    } else {
-        tournament.standings.forEach(group => {
-            tablesHTML += `<h3 class="group-title">${group.group_name}</h3><div style="overflow-x:auto;"><table class="standings-table bg-gray-200 dark:bg-gray-900"><thead><tr><th>#</th><th style="text-align:right;">الفريق</th><th>لعب</th><th>ف</th><th>ت</th><th>خ</th><th>له/عليه</th><th>ف.أ</th><th>نقاط</th></tr></thead><tbody>${group.teams.map((team, index) => `<tr><td>${index + 1}</td><td class="team-cell"><img src="${team.logo}" alt="" class="team-logo"><span class="team-name">${team.name.split(/\\n|\\r\n|\r/)[0].trim()}</span></td><td>${team.played}</td><td>${team.win}</td><td>${team.draw}</td><td>${team.lose}</td><td>${team.goals}</td><td>${team.diff}</td><td><strong>${team.points}</strong></td></tr>`).join('')}</tbody></table></div>`;
-        });
-    }
-    standingsDisplayContainer.innerHTML = `<div class="standings-header"><div class="standings-title-info"><img src="${tournament.image}" alt="${tournament.title}" class="standings-logo"><h1 class="standings-title">${tournament.title}</h1></div><button class="back-to-grid-btn">العودة للبطولات</button></div><div id="standings-tables-container">${tablesHTML}</div>`;
-    standingsDisplayContainer.querySelector('.back-to-grid-btn').addEventListener('click', () => {
-        standingsDisplayContainer.style.display = 'none';
-        tournamentsGridContainer.style.display = 'block';
-        window.scrollTo(0, 0);
-    });
 }
