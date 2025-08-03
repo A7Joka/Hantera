@@ -41,7 +41,6 @@ container.innerHTML = `<p style="text-align:center;">لا توجد مباريا�
     moreWrapper.className = "w-full flex justify-center mt-4";
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "matches-view"));
     section.appendChild(moreWrapper);
-    switchView(matches-view);
     section.addEventListener('click', (e) => {
       const matchBody = e.target.closest('.match-body');
       if (matchBody) {
@@ -99,8 +98,8 @@ const container = document.getElementById("home-news-container");
     const news = data.slice(0, 3);
     alllNewsData = news;
 
-    news.forEach((article, index) => {
-      const card = createNewsCard(article, index);
+    news.forEach(article => {
+      const card = createNewsCard(article);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -108,7 +107,6 @@ const container = document.getElementById("home-news-container");
     moreWrapper.className = "w-full flex justify-center mt-4";
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "news-view"));
     section.appendChild(moreWrapper);
-    switchView(news-view);
     section.addEventListener('click', (e) => {
       const newsCard = e.target.closest('.news-card');
       if (newsCard) {
@@ -174,8 +172,8 @@ const container = document.getElementById("home-tournaments-container");
     const tournaments = json.data.slice(0, 3);
 alllTournamentsData = tournaments;
 
-    tournaments.forEach((tournament, index) => {
-      const card = createTournamentCard(tournament, index);
+    tournaments.forEach(tournament => {
+      const card = createTournamentCard(tournament);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -183,7 +181,6 @@ alllTournamentsData = tournaments;
     moreWrapper.className = "w-full flex justify-center mt-4";
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "tournaments-view"));
     section.appendChild(moreWrapper);
-    switchView(tournaments-view);
     section.addEventListener('click', (e) => {
       const card = e.target.closest('.tournament-card');
       if (card) {
@@ -258,7 +255,7 @@ function createTransferCard(t) {
   `;
   return div;
 }
-function createNewsCard(item, index) {
+function createNewsCard(item, index = 0) {
   const div = document.createElement("div");
   div.innerHTML = `
     <div class="news-card bg-gray-200 dark:bg-gray-900" data-news-index="${index}">
@@ -291,7 +288,7 @@ function createVideoCard(item) {
 }
 
 
-function createTournamentCard(tour, index) {
+function createTournamentCard(tour, index = 0) {
   const div = document.createElement("div");
   div.innerHTML = `
     <div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}">
