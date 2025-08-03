@@ -47,17 +47,17 @@
             <div class="text-2xl font-bold text-primary">Hantera TV</div>
             <ul id="main-nav" class="nav flex gap-4 text-sm md:text-base font-semibold bg-gray-100 dark:bg-gray-800">
                 <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100 active"
-                        data-view="home-view">الصفحة الرئيسية</a></li>
+                        data-view="home-view">الرئيسية</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
                         data-view="matches-view">المباريات</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
-                        data-view="transfers-view">آخر الانتقالات</a></li>
-                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
                         data-view="news-view">الأخبار</a></li>
+                <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
+                        data-view="tournaments-view">البطولات</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
                         data-view="videos-view">الفيديوهات</a></li>
                 <li class="nav-item"><a href="#" class="nav-link text-gray-800 dark:text-gray-100"
-                        data-view="tournaments-view">البطولات</a></li>
+                        data-view="transfers-view">الإنتقالات</a></li>
             </ul> <button id="theme-toggle"
                 class="fixed bottom-4 end-4 z-50 w-12 h-12 flex items-center justify-center bg-primary text-white rounded-full shadow-lg transition hover:scale-105">
                 <span id="theme-icon" class="text-xl">🌙</span> </button> <button id="drawer-toggle"
@@ -74,15 +74,7 @@
                 </div>
                 <div id="home-matches-container" class="space-y-4"></div>
             </section>
-            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
-                <h2 class="text-xl font-bold text-primary mb-4">آخر الانتقالات</h2>
-                <div id="home-transfers-loading-spinner" class="flex justify-center py-4">
-                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
-                    </div>
-                </div>
-                <div id="home-transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
-                </div>
-            </section>
+            
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
                 <h2 class="text-xl font-bold text-primary mb-4">آخر الأخبار</h2>
                 <div id="home-news-loading-spinner" class="flex justify-center py-4">
@@ -90,6 +82,15 @@
                     </div>
                 </div>
                 <div id="home-news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            </section>
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-10">
+                <h2 class="text-xl font-bold text-primary mb-4">البطولات</h2>
+                <div id="home-tournaments-loading-spinner" class="flex justify-center py-4">
+                    <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
+                    </div>
+                </div>
+                <div id="home-tournaments-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                </div>
             </section>
             <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
                 <h2 class="text-xl font-bold text-primary mb-4">أحدث الفيديوهات</h2>
@@ -99,13 +100,14 @@
                 </div>
                 <div id="home-videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
             </section>
-            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4 mb-10">
-                <h2 class="text-xl font-bold text-primary mb-4">البطولات</h2>
-                <div id="home-tournaments-loading-spinner" class="flex justify-center py-4">
+            
+            <section class="bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+                <h2 class="text-xl font-bold text-primary mb-4">آخر الانتقالات</h2>
+                <div id="home-transfers-loading-spinner" class="flex justify-center py-4">
                     <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin">
                     </div>
                 </div>
-                <div id="home-tournaments-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
+                <div id="home-transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3">
                 </div>
             </section>
         </div>
@@ -151,13 +153,6 @@
             </div>
             <div id="matches-container"></div>
         </div>
-        <div id="transfers-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
-            <h1 class="text-lg font-bold text-primary mb-4">آخر الانتقالات</h1>
-            <div id="transfers-loading-spinner" class="flex justify-center py-4">
-                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
-            </div>
-            <div id="transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
-        </div>
         <div id="news-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
             <h1 class="text-lg font-bold text-primary mb-4">أحدث الأخبار</h1>
             <div id="news-loading-spinner" class="flex justify-center py-4">
@@ -165,14 +160,6 @@
             </div>
             <div id="news-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
             <div id="news-load-more-container" class="load-more-container mt-4 text-center"></div>
-        </div>
-        <div id="videos-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
-            <h1 class="text-lg font-bold text-primary mb-4">أحدث الفيديوهات</h1>
-            <div id="videos-loading-spinner" class="flex justify-center py-4">
-                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
-            </div>
-            <div id="videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
-            <div id="videos-load-more-container" class="load-more-container mt-4 text-center"></div>
         </div>
         <div id="tournaments-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
             <h1 class="text-lg font-bold text-primary mb-4">البطولات</h1>
@@ -183,6 +170,21 @@
                 <div id="tournaments-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4"></div>
             </div>
             <div id="standings-display-container" class="mt-4" style="display: none;"></div>
+        </div>
+        <div id="videos-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">أحدث الفيديوهات</h1>
+            <div id="videos-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="videos-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
+            <div id="videos-load-more-container" class="load-more-container mt-4 text-center"></div>
+        </div>
+        <div id="transfers-view" class="view bg-white dark:bg-gray-800 rounded-xl shadow-md p-4">
+            <h1 class="text-lg font-bold text-primary mb-4">آخر الانتقالات</h1>
+            <div id="transfers-loading-spinner" class="flex justify-center py-4">
+                <div class="spinner w-6 h-6 border-4 border-t-teal-600 border-gray-300 rounded-full animate-spin"></div>
+            </div>
+            <div id="transfers-container" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3"></div>
         </div>
         <div id="match-details-view"
             class="view bg-white dark:bg-gray-800 text-gray-800 dark:text-gray-100 p-4 md:p-6 rounded-2xl shadow-lg border border-gray-200 dark:border-gray-700 transition-all duration-300">
@@ -428,4 +430,5 @@
 </body>
 
 </html>
+
 
