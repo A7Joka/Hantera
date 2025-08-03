@@ -319,6 +319,15 @@ function createMoreCard(text, viewId) {
   });
   return a;
 }
+document.querySelectorAll('a[data-view]').forEach(link => {
+  link.addEventListener('click', e => {
+    e.preventDefault();
+    const targetViewId = link.dataset.view;
+    document.querySelectorAll('a[data-view]').forEach(el => el.classList.remove('text-primary'));
+    link.classList.add('text-primary');
+    switchView(targetViewId);
+  });
+});
 
 
 // ---------- التنقل بين الـ views ----------
@@ -332,4 +341,5 @@ function switchView(viewId) {
   if (targetLink) {
     targetLink.classList.add('active');
   }
+  window.scrollTo(0, 0);
 }
