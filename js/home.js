@@ -73,7 +73,7 @@ const container = document.getElementById("home-transfers-container");
       container.appendChild(card);
     });
     if (!transfers || transfers.length === 0) {
-        Container.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
+        container.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
         return;
     }
     const section = container.parentElement;
@@ -100,8 +100,8 @@ const container = document.getElementById("home-news-container");
     const news = data.slice(0, 3);
     alllNewsData = news;
 
-    news.forEach(article => {
-      const card = createNewsCard(article);
+news.forEach((article, index) => {
+  const card = createNewsCard(article, index);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -178,8 +178,8 @@ const container = document.getElementById("home-tournaments-container");
     const tournaments = json.data.slice(0, 3);
 alllTournamentsData = tournaments;
 
-    tournaments.forEach(tournament => {
-      const card = createTournamentCard(tournament);
+tournaments.forEach((tournament, index) => {
+  const card = createTournamentCard(tournament, index);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -263,7 +263,7 @@ function createTransferCard(t) {
   `;
   return div;
 }
-function createNewsCard(item, index = 0) {
+function createNewsCard(item, index) {
   const div = document.createElement("div");
   div.innerHTML = `
     <div class="news-card bg-gray-200 dark:bg-gray-900" data-news-index="${index}">
@@ -296,7 +296,7 @@ function createVideoCard(item) {
 }
 
 
-function createTournamentCard(tour, index = 0) {
+function createTournamentCard(tour, index) {
   const div = document.createElement("div");
   div.innerHTML = `
     <div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}">
