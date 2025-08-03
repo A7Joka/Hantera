@@ -14,8 +14,7 @@ const htols = document.getElementById('home-tournaments-loading-spinner');
 // 1. تحميل المباريات
 async function loadMatches() {
       hmals.style.display = 'flex';
-
-  const container = document.getElementById("home-matches-container");
+const container = document.getElementById("home-matches-container");
   try {
     const res = await fetch("https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=3:00");
     const json = await res.json();
@@ -25,12 +24,23 @@ async function loadMatches() {
       const card = createMatchCard(match);
       container.appendChild(card);
     });
-const section = container.parentElement; // جايب السكشن الأب
+    if (!matches || matches.length === 0) {
+      matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
+      return;
+    }
+    const section = container.parentElement;
     const moreWrapper = document.createElement("div");
     moreWrapper.className = "w-full flex justify-center mt-4";
-    moreWrapper.appendChild(createMoreCard("عرض المزيد", "matches-view")); 
+    moreWrapper.appendChild(createMoreCard("عرض المزيد", "matches-view"));
     section.appendChild(moreWrapper);
-
+    section.addEventListener('click', (e) => {
+      const matchBody = e.target.closest('.match-body');
+      if (matchBody) {
+        const matchId = matchBody.dataset.matchId;
+        const matchData = allMatchesData.find(m => m['Match-id'] == matchId);
+        if (matchData) showMatchDetailsPage(matchData);
+      }
+    });
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل المباريات</p>`;
     console.error("Matches Error:", err);
@@ -42,8 +52,7 @@ const section = container.parentElement; // جايب السكشن الأب
 // 2. تحميل الانتقالات
 async function loadTransfers() {
         htrls.style.display = 'flex';
-
-  const container = document.getElementById("home-transfers-container");
+const container = document.getElementById("home-transfers-container");
   try {
     const res = await fetch("https://ko.best-goal.live/transation.php");
     const json = await res.json();
@@ -53,12 +62,16 @@ async function loadTransfers() {
       const card = createTransferCard(transfer);
       container.appendChild(card);
     });
-const section = container.parentElement; // جايب السكشن الأب
+    if (!transfers || transfers.length === 0) {
+        transfersContainer.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
+        return;
+    }
+    const section = container.parentElement;
     const moreWrapper = document.createElement("div");
     moreWrapper.className = "w-full flex justify-center mt-4";
-     moreWrapper.appendChild(createMoreCard("عرض المزيد", "transfers-view"));
+    moreWrapper.appendChild(createMoreCard("عرض المزيد", "transfers-view"));
     section.appendChild(moreWrapper);
-   
+
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الانتقالات</p>`;
     console.error("Transfers Error:", err);
@@ -70,8 +83,7 @@ const section = container.parentElement; // جايب السكشن الأب
 // 3. تحميل الأخبار
 async function loadNews() {
         hnels.style.display = 'flex';
-
-  const container = document.getElementById("home-news-container");
+const container = document.getElementById("home-news-container");
   try {
     const res = await fetch("https://ko.best-goal.live/news.php");
     const data = await res.json();
@@ -81,11 +93,21 @@ async function loadNews() {
       const card = createNewsCard(article);
       container.appendChild(card);
     });
-const section = container.parentElement; // جايب السكشن الأب
+    const section = container.parentElement;
     const moreWrapper = document.createElement("div");
     moreWrapper.className = "w-full flex justify-center mt-4";
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "news-view"));
     section.appendChild(moreWrapper);
+    section.addEventListener('click', (e) => {
+      const newsCard = e.target.closest('.news-card');
+      if (newsCard) {
+        const newsIndex = newsCard.dataset.newsIndex;
+        const article = allNewsData[newsIndex];
+        if (article) {
+          showNewsArticle(article);
+        }
+      }
+    });
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الأخبار</p>`;
     console.error("News Error:", err);
@@ -97,8 +119,7 @@ const section = container.parentElement; // جايب السكشن الأب
 // 4. تحميل الفيديوهات
 async function loadVideos() {     
   hvils.style.display = 'flex';
-
-  const container = document.getElementById("home-videos-container");
+const container = document.getElementById("home-videos-container");
   try {
     const res = await fetch("https://ko.best-goal.live/videos.php");
     const data = await res.json();
@@ -108,16 +129,26 @@ async function loadVideos() {
       const card = createVideoCard(video);
       container.appendChild(card);
     });
-const section = container.parentElement; // جايب السكشن الأب
+    const section = container.parentElement;
     const moreWrapper = document.createElement("div");
     moreWrapper.className = "w-full flex justify-center mt-4";
     moreWrapper.appendChild(createMoreCard("عرض المزيد", "videos-view"));
     section.appendChild(moreWrapper);
-
+    section.addEventListener('click', (e) => {
+      const videoCard = e.target.closest('.video-card');
+      if (videoCard) {
+        const m3u8Url = videoCard.dataset.m3u8Url;
+        if (m3u8Url) {
+          const playerHtml = `<!DOCTYPE html><html><head><style>body,html{margin:0;padding:0;height:100%;width:100%;background-color:#000;}#player{height:100%!important;width:100%!important;}</style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.5/jwplayer.js"><\/script><script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';<\/script></head><body><div id="player"></div><script>jwplayer("player").setup({file:"${m3u8Url}",type:'hls',width:"100%",height:"100%",autostart: true});<\/script></body></html>`;
+          videoPlayerIframe.srcdoc = playerHtml;
+          videoPlayerModal.style.display = 'flex';
+        }
+      }
+    });
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الفيديوهات</p>`;
     console.error("Videos Error:", err);
-  }finally {
+  } finally {
         hvils.style.display = 'none';
     }
 }
@@ -125,8 +156,7 @@ const section = container.parentElement; // جايب السكشن الأب
 // 5. تحميل البطولات
 async function loadTournaments() {
         htols.style.display = 'flex';
-
-  const container = document.getElementById("home-tournaments-container");
+const container = document.getElementById("home-tournaments-container");
   try {
     const res = await fetch("https://ko.best-goal.live/get.php");
     const json = await res.json();
@@ -136,16 +166,23 @@ async function loadTournaments() {
       const card = createTournamentCard(tournament);
       container.appendChild(card);
     });
-const section = container.parentElement; // جايب السكشن الأب
+    const section = container.parentElement;
     const moreWrapper = document.createElement("div");
     moreWrapper.className = "w-full flex justify-center mt-4";
-    moreWrapper.appendChild(createMoreCard("عرض المزيد", "tournaments-view")); 
+    moreWrapper.appendChild(createMoreCard("عرض المزيد", "tournaments-view"));
     section.appendChild(moreWrapper);
+    section.addEventListener('click', (e) => {
+      const card = e.target.closest('.tournament-card');
+      if (card) {
+        const index = card.dataset.index;
+        displayStandings(allTournamentsData[index]);
+      }
+    });
 
   } catch (err) {
     container.innerHTML = `<p class="text-red-500">فشل تحميل البطولات</p>`;
     console.error("Tournaments Error:", err);
-  }finally {
+  } finally {
         htols.style.display = 'none';
     }
 }
@@ -155,10 +192,13 @@ function createMatchCard(match) {
   const API_DOMAIN = "https://www.yanb8.com";
 
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'مؤجلة';
-  const statusClass = match['Match-Status'] === 'انتهت' ? 'status-finished'
-    : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
-    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-    : 'status-live';
+  const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
+    : match['Match-Status'] === 'انتهت' ? 'status-finished'
+      : match['Match-Status'] === 'بعد الوقت الاضافي' ? 'status-finished'
+        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
+          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+              : 'status-live';
 
   const matchTimeOrResult = isNotStarted
     ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
