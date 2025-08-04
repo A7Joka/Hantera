@@ -210,12 +210,12 @@ tournaments.forEach((tournament, index) => {
 function createMatchCard(match) {
   const API_DOMAIN = "https://www.yanb8.com";
 
-  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'مؤجلة';
+  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
   const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
       : match['Match-Status'] === 'بعد الوقت الاضافي' ? 'status-finished'
         : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
 
