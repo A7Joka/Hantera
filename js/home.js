@@ -8,7 +8,8 @@ document.addEventListener("DOMContentLoaded", () => {
 import {
   showMatchDetailsPage,
   displayStandings,
-  showNewsArticle
+  showNewsArticle,
+  getUserTimeZoneOffset
 } from './script.js';
 let alllMatchesData = [];
 let alllNewsData = [];
@@ -18,13 +19,13 @@ const htrls = document.getElementById('home-transfers-loading-spinner');
 const hnels = document.getElementById('home-news-loading-spinner');
 const hvils = document.getElementById('home-videos-loading-spinner');
 const htols = document.getElementById('home-tournaments-loading-spinner');
-
+const userTimeZone = getUserTimeZoneOffset();
 // 1. تحميل المباريات
 async function loadMatches() {
       hmals.style.display = 'flex';
 const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch("https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=3:00");
+    const res = await fetch(`https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com/api/matches/?date=today&time=${userTimeZone}`);
     const json = await res.json();
     const matches = json["STING-WEB-Matches"].slice(0, 5);
     alllMatchesData = matches;
