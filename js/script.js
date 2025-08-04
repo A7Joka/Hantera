@@ -523,7 +523,7 @@ async function fetchEventsAndLineup(match) {
 
         const shouldFetchStreams =
             matchStatus === 'status-live' ||
-            (matchStatus === 'status-not-started' && diffInSeconds <= 3600 && diffInSeconds > 0);
+            (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
 
         if (shouldFetchStreams) {
             await fetchAndDisplayStreams(match);
@@ -930,6 +930,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
