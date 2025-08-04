@@ -109,12 +109,12 @@ function displayMatches(matches) {
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${API_DOMAIN}${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
-                const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'مؤجلة') ?
+                const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
                      `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
     : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
                 let statusClass = 'status-not-started';
                 if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
-                else if (match['Match-Status'] === 'مؤجلة') statusClass = 'status-postponed';
+                else if (match['Match-Status'] === 'تأجلت') statusClass = 'status-postponed';
                 else if (match['Match-Status'] !== 'لم تبدأ') statusClass = 'status-live';
                 return `  <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
@@ -140,12 +140,12 @@ function displayMatches(matches) {
 function createMatchCard(match) {
   const API_DOMAIN = "https://www.yanb8.com";
 
-  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'مؤجلة';
+  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
   const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
       : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
         : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
 
@@ -512,7 +512,7 @@ async function fetchEventsAndLineup(match) {
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
       : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
         : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live'; // مثال: "live" أو "not-started"
         const startTime = new Date(match['Time-Start']); // وقت البداية من API
@@ -638,7 +638,7 @@ function showMatchDetailsPage(match) {
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
       : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
         : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
   if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed'){
@@ -930,6 +930,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
