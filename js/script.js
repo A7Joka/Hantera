@@ -641,10 +641,10 @@ function showMatchDetailsPage(match) {
           : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
-  if (matchStatus === 'status-live'){
-    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
-  } else {
+  if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed'){
     modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+  } else {
+    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   }
     detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
     detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
@@ -930,6 +930,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
