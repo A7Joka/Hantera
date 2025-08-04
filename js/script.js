@@ -605,7 +605,7 @@ async function refreshAdminStreamList(matchId) {
         let html = '';
         querySnapshot.forEach((doc) => {
             const stream = doc.data();
-            html += `<div class="current-stream-item"><span>${stream.channelName} (${stream.streamType})</span><div class="stream-actions"><button class="edit-stream-btn" data-id="${doc.id}">تعديل</button><button class="delete-stream-btn" data-id="${doc.id}">حذف</button></div></div>`;
+            html += `<div class="current-stream-item" class="bg-white dark:bg-gray-900 border"><span>${stream.channelName} (${stream.streamType})</span><div class="stream-actions"><button class="edit-stream-btn" data-id="${doc.id}">تعديل</button><button class="delete-stream-btn" data-id="${doc.id}">حذف</button></div></div>`;
         });
         currentStreamsList.innerHTML = html;
     } catch (error) {
@@ -911,6 +911,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
