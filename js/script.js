@@ -113,7 +113,7 @@ function displayMatches(matches) {
                      `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
     : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
                 let statusClass = 'status-not-started';
-                if (match['Match-Status'] === 'انتهت') statusClass = 'status-finished';
+                if (match['Match-Status'] === 'انتهت' || match['Match-Status'] === 'بعد الوقت الإضافي' || match['Match-Status'] === 'بعد ركلات الترجيح' || match['Match-Status'] === 'انتهت للتو' ) statusClass = 'status-finished';
                 else if (match['Match-Status'] === 'مؤجلة') statusClass = 'status-postponed';
                 else if (match['Match-Status'] !== 'لم تبدأ') statusClass = 'status-live';
                 return `  <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
@@ -141,10 +141,13 @@ function createMatchCard(match) {
   const API_DOMAIN = "https://www.yanb8.com";
 
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'مؤجلة';
-  const statusClass = match['Match-Status'] === 'انتهت' ? 'status-finished'
-    : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
-    : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-    : 'status-live';
+  const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
+    : match['Match-Status'] === 'انتهت' ? 'status-finished'
+      : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
+        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
+          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+              : 'status-live';
 
   const matchTimeOrResult = isNotStarted
     ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
@@ -505,7 +508,13 @@ async function fetchEventsAndLineup(match) {
         const details = data['STING-WEB-Match-Details'];
 
         // تحقق من حالة المباراة ووقت البدء
-        const matchStatus = match['Match-Status']; // مثال: "live" أو "not-started"
+        const matchStatus = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
+    : match['Match-Status'] === 'انتهت' ? 'status-finished'
+      : match['Match-Status'] === 'بعد الوقت الإضافي' ? 'status-finished'
+        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
+          : match['Match-Status'] === 'مؤجلة' ? 'status-postponed'
+            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+              : 'status-live'; // مثال: "live" أو "not-started"
         const startTime = new Date(match['Time-Start']); // وقت البداية من API
         const now = new Date();
 
@@ -911,6 +920,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
