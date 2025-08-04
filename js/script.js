@@ -7,6 +7,14 @@ function loadAllData() {
   setTimeout(() => fetchTournaments(), 1000);
   setTimeout(() => fetchNews(), 1500);
 }
+function getUserTimeZoneOffset() {
+    const offsetMinutes = new Date().getTimezoneOffset(); // بالمينتس، سالب يعني + timezone
+    const absMinutes = Math.abs(offsetMinutes);
+    const hours = String(Math.floor(absMinutes / 60)).padStart(2, '0');
+    const minutes = String(absMinutes % 60).padStart(2, '0');
+    const sign = offsetMinutes <= 0 ? '+' : '-';
+    return encodeURIComponent(`${sign}${hours}:${minutes}`);
+}
 
 // FINAL STABLE VERSION - PART 1 of 4
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -351,7 +359,7 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `${API_DOMAIN}/api/matches/?date=${dateString}&time=3:00`;
+    const apiUrl = `${API_DOMAIN}/api/matches/?date=${dateString}&time=${userTimeZone}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
@@ -484,18 +492,38 @@ async function fetchTransfers() {
         transfersLoadingSpinner.style.display = 'none';
     }
 }
-
 async function fetchEventsAndLineup(match) {
-    ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>');
-    const apiUrl = `${API_DOMAIN}/api/matches/events/?MatchID=${match['Match-id']}&time=%2B03%3A00`;
+    ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => {
+        document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+    });
+
+    const apiUrl = `${API_DOMAIN}/api/matches/events/?MatchID=${match['Match-id']}&time=${userTimeZone}`;
+
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
         const details = data['STING-WEB-Match-Details'];
-        await fetchAndDisplayStreams(match); 
+
+        // تحقق من حالة المباراة ووقت البدء
+        const matchStatus = match['Match-Status']; // مثال: "live" أو "not-started"
+        const startTime = new Date(match['Time-Start']); // وقت البداية من API
+        const now = new Date();
+
+        // حساب الفرق بالثواني
+        const diffInSeconds = (startTime - now) / 1000;
+
+        const shouldFetchStreams =
+            matchStatus === 'live' ||
+            (matchStatus === 'not-started' && diffInSeconds <= 1800 && diffInSeconds > 0);
+
+        if (shouldFetchStreams) {
+            await fetchAndDisplayStreams(match);
+        }
+
         renderInfo(details['Match-Info'], match);
         renderLineup(details['Match-Lineup'], match);
         renderEvents(details['Match-Events']);
+
     } catch (e) {
         console.error("Fetch Details Error:", e);
         document.querySelector('#tab-info').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التفاصيل</p>';
@@ -880,8 +908,10 @@ fetchMatches(formatDateToString(new Date()));
 export {
   showMatchDetailsPage,
   displayStandings,
-  showNewsArticle
+  showNewsArticle,
+  getUserTimeZoneOffset
 };
+
 
 
 
