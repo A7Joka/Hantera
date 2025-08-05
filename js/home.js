@@ -257,9 +257,9 @@ function createTransferCard(t) {
     <p class="font-semibold">${t.player_name}</p>
     <p class="text-xs text-gray-400">${t.player_position}</p>
     <div class="flex justify-center items-center gap-2 mt-2">
-      <img src="${t.from_club_logo}" alt="" class="w-8 h-8" />
-      <span class="text-sm">→</span>
       <img src="${t.to_club_logo}" alt="" class="w-8 h-8" />
+      <span class="text-sm">→</span>
+      <img src="${t.from_club_logo}" alt="" class="w-8 h-8" />
     </div>
   `;
   return div;
