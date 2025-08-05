@@ -229,11 +229,11 @@ function displayTransfers(transfers) {
             </div>
             <div class="transfer-clubs-section">
                 <div class="transfer-club">
-                    <img src="${item.from_club_logo}" alt="" class="transfer-club-logo">
+                    <img src="${item.to_club_logo}" alt="" class="transfer-club-logo">
                 </div>
                 <span class="transfer-arrow">&rarr;</span>
                 <div class="transfer-club">
-                    <img src="${item.to_club_logo}" alt="" class="transfer-club-logo">
+                    <img src="${item.from_club_logo}" alt="" class="transfer-club-logo">
                 </div>
             </div>
             <div class="transfer-footer">
@@ -930,6 +930,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
