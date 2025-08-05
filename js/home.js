@@ -253,13 +253,13 @@ function createTransferCard(t) {
   const div = document.createElement("div");
   div.className = "bg-gray-200 dark:bg-gray-900 p-4 rounded-lg shadow text-center";
   div.innerHTML = `
-    <img src="${t.player_image}" class="mx-auto w-16 h-16 rounded-full mb-2" />
+    <img src="${t.player_image}" alt="${t.player_name}" class="mx-auto w-16 h-16 rounded-full mb-2" />
     <p class="font-semibold">${t.player_name}</p>
     <p class="text-xs text-gray-400">${t.player_position}</p>
     <div class="flex justify-center items-center gap-2 mt-2">
-      <img src="${t.from_club_logo}" class="w-8 h-8" />
+      <img src="${t.from_club_logo}" alt="" class="w-8 h-8" />
       <span class="text-sm">→</span>
-      <img src="${t.to_club_logo}" class="w-8 h-8" />
+      <img src="${t.to_club_logo}" alt="" class="w-8 h-8" />
     </div>
   `;
   return div;
