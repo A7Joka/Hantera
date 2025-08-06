@@ -646,15 +646,26 @@ header ul li a.active {
 }
 
 .modal-close-btn {
-    background: none;
-    border: none;
     font-size: 2.5rem;
     color: white;
+    position: absolute;
+    top: -40px;
+    right: 0;
+    color: white;
+    background: #d12654;
+    border: none;
+    padding: 0.6rem 1.2rem;
+    border-radius: 25px;
     cursor: pointer;
-    line-height: 1;
-    z-index: 2010;
-    text-shadow: 0 0 5px black;
-    padding: 0;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    transition: var(--transition);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+}
+.modal-close-btn:hover{
+    transform: translateY(-3px);
 }
 
 .modal-match-card {
@@ -1342,6 +1353,7 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
+
 
 
 
