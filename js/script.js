@@ -33,7 +33,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const ADMIN_PASSWORD = "Vbnb123@";
-const API_DOMAIN = 'https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com';
+const API_DOMAIN = 'https://corsproxy.io/?https://www.yanb8.com';
 let allMatchesData = [];
 let currentDate = new Date();
 let allTournamentsData = [];
@@ -930,6 +930,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
