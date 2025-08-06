@@ -25,7 +25,7 @@ async function loadMatches() {
       hmals.style.display = 'flex';
 const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch(`https://www.yanb8.com/api/matches/?date=today&time=${userTimeZone}`);
+    const res = await fetch(`https://corsproxy.io/?https://www.yanb8.com/api/matches/?date=today&time=${userTimeZone}`);
     const json = await res.json();
     const matches = json["STING-WEB-Matches"].slice(0, 5);
     alllMatchesData = matches;
