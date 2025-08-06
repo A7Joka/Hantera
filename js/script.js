@@ -107,7 +107,7 @@ function displayMatches(matches) {
     }, {});
     matchesContainer.innerHTML = Object.values(matchesByCup).map(cupData => `
         <div class="match-card bg-gray-200 dark:bg-gray-900">
-            <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${API_DOMAIN}${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
+            <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
                 const detailsContent = (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت') ?
                      `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
@@ -118,7 +118,7 @@ function displayMatches(matches) {
                 else if (match['Match-Status'] !== 'لم تبدأ') statusClass = 'status-live';
                 return `  <div class="match-body bg-gray-200 dark:bg-gray-900 mb-1 mt-1" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
+      <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
     </div>
     <div class="match-part part-name text-gray-800 dark:text-gray-100">
       <span class="team-name">${match['Team-Left']['Name']}</span>
@@ -131,15 +131,13 @@ function displayMatches(matches) {
       <span class="team-name">${match['Team-Right']['Name']}</span>
     </div>
     <div class="match-part part-logo bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
+      <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
     </div>
   </div>`;
             }).join('')}
         </div>`).join('');
 }
 function createMatchCard(match) {
-  const API_DOMAIN = "https://www.yanb8.com";
-
   const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
   const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
     : match['Match-Status'] === 'انتهت' ? 'status-finished'
@@ -158,7 +156,7 @@ function createMatchCard(match) {
   div.innerHTML = `
   <div class="match-body" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo">
-      <img src="${API_DOMAIN}${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
+      <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
     </div>
     <div class="match-part part-name">
       <span class="team-name">${match['Team-Left']['Name']}</span>
@@ -171,7 +169,7 @@ function createMatchCard(match) {
       <span class="team-name">${match['Team-Right']['Name']}</span>
     </div>
     <div class="match-part part-logo">
-      <img src="${API_DOMAIN}${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
+      <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
     </div>
   </div>
   `;
@@ -362,7 +360,7 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `${API_DOMAIN}/api/matches/?date=${dateString}&time=${userTimeZone}`;
+    const apiUrl = `https://www.ysscores.com/ar/match_date_to?date=${dateString}&time=${userTimeZone}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
@@ -500,7 +498,7 @@ async function fetchEventsAndLineup(match) {
         document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
-    const apiUrl = `${API_DOMAIN}/api/matches/events/?MatchID=${match['Match-id']}&time=${userTimeZone}`;
+    const apiUrl = `https://www.ysscores.com/ar/match_date_to?MatchID=${match['Match-id']}&time=${userTimeZone}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -642,9 +640,9 @@ function showMatchDetailsPage(match) {
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
   if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed'){
-    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   } else {
-    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   }
     detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
     detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
@@ -930,6 +928,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
