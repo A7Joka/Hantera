@@ -646,11 +646,7 @@ header ul li a.active {
 }
 
 .modal-close-btn {
-    font-size: 2.5rem;
-    color: white;
-    position: absolute;
-    top: -40px;
-    right: 0;
+    font-size: 0.8rem;
     color: white;
     background: #d12654;
     border: none;
@@ -661,6 +657,7 @@ header ul li a.active {
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    width: 24%;
     transition: var(--transition);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
 }
@@ -1353,6 +1350,7 @@ header ul li a.active {
         font-size: 1.5rem;
     }
 }
+
 
 
 
