@@ -33,7 +33,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 const ADMIN_PASSWORD = "Vbnb123@";
-const API_DOMAIN = 'https://corsproxy.io/?https://www.yanb8.com';
+const API_DOMAIN = 'https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com';
 let allMatchesData = [];
 let currentDate = new Date();
 let allTournamentsData = [];
@@ -95,7 +95,7 @@ const backToNewsBtn = document.getElementById('backToNewsBtn');
 // --- RENDER & DISPLAY FUNCTIONS ---
 function displayMatches(matches) {
     if (!matches || matches.length === 0) {
-        matchesContainer.textContent = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
+        matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
         return;
     }
     const matchesByCup = matches.reduce((acc, match) => {
@@ -105,7 +105,7 @@ function displayMatches(matches) {
         }).matches.push(match);
         return acc;
     }, {});
-    matchesContainer.textContent = Object.values(matchesByCup).map(cupData => `
+    matchesContainer.innerHTML = Object.values(matchesByCup).map(cupData => `
         <div class="match-card bg-gray-200 dark:bg-gray-900">
             <div class="cup-header bg-gray-200 dark:bg-gray-900"><img src="${API_DOMAIN}${cupData.cupInfo['Cup-Logo']}" alt="" class="cup-logo"><h2 class="cup-name">${cupData.cupInfo['Cup-Name']}</h2></div>
             ${cupData.matches.map(match => {
@@ -155,7 +155,7 @@ function createMatchCard(match) {
 
   const div = document.createElement("div");
   div.className = "match-card";
-  div.textContent = `
+  div.innerHTML = `
   <div class="match-body" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo">
       <img src="${API_DOMAIN}${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
@@ -178,15 +178,15 @@ function createMatchCard(match) {
   return div;
 }
 function displayNews() {
-    newsContainer.textContent = allNewsData.map((item, index) => `<div class="news-card bg-gray-200 dark:bg-gray-900" data-news-index="${index}"><img src="${item.image}" alt="${item.title}" class="news-image"><div class="news-content"><h2 class="news-title">${item.title}</h2><p class="news-summary">${item.sub_link}</p><p class="news-time">${item.time}</p></div></div>`).join('');
+    newsContainer.innerHTML = allNewsData.map((item, index) => `<div class="news-card bg-gray-200 dark:bg-gray-900" data-news-index="${index}"><img src="${item.image}" alt="${item.title}" class="news-image"><div class="news-content"><h2 class="news-title">${item.title}</h2><p class="news-summary">${item.sub_link}</p><p class="news-time">${item.time}</p></div></div>`).join('');
 }
 
 function displayVideos() {
-    videosContainer.textContent = allVideosData.map(item => `<div class="video-card bg-gray-200 dark:bg-gray-900" data-m3u8-url="${item.m3u8_url}"><div class="video-thumbnail-wrapper"><img src="${item.imageurl}" alt="${item.title}" class="video-thumbnail"><div class="play-icon"></div></div><div class="video-content"><h2 class="video-title">${item.title}</h2><p class="video-category">${item.category}</p></div></div>`).join('');
+    videosContainer.innerHTML = allVideosData.map(item => `<div class="video-card bg-gray-200 dark:bg-gray-900" data-m3u8-url="${item.m3u8_url}"><div class="video-thumbnail-wrapper"><img src="${item.imageurl}" alt="${item.title}" class="video-thumbnail"><div class="play-icon"></div></div><div class="video-content"><h2 class="video-title">${item.title}</h2><p class="video-category">${item.category}</p></div></div>`).join('');
 }
 
 function displayTournamentsGrid(tournaments) {
-    tournamentsGrid.textContent = tournaments.map((tour, index) => `<div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}"><img src="${tour.image}" alt="${tour.title}" class="tournament-card-image"><h3 class="tournament-card-title">${tour.title}</h3></div>`).join('');
+    tournamentsGrid.innerHTML = tournaments.map((tour, index) => `<div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}"><img src="${tour.image}" alt="${tour.title}" class="tournament-card-image"><h3 class="tournament-card-title">${tour.title}</h3></div>`).join('');
 }
 
 function displayStandings(tournament) {
@@ -201,7 +201,7 @@ function displayStandings(tournament) {
             tablesHTML += `<h3 class="group-title">${group.group_name}</h3><div style="overflow-x:auto;"><table class="standings-table bg-gray-200 dark:bg-gray-900"><thead><tr><th>#</th><th style="text-align:right;">الفريق</th><th>لعب</th><th>ف</th><th>ت</th><th>خ</th><th>له/عليه</th><th>ف.أ</th><th>نقاط</th></tr></thead><tbody>${group.teams.map((team, index) => `<tr><td>${index + 1}</td><td class="team-cell"><img src="${team.logo}" alt="" class="team-logo"><span class="team-name">${team.name.split(/\\n|\\r\n|\r/)[0].trim()}</span></td><td>${team.played}</td><td>${team.win}</td><td>${team.draw}</td><td>${team.lose}</td><td>${team.goals}</td><td>${team.diff}</td><td><strong>${team.points}</strong></td></tr>`).join('')}</tbody></table></div>`;
         });
     }
-    standingsDisplayContainer.textContent = `<div class="standings-header"><div class="standings-title-info"><img src="${tournament.image}" alt="${tournament.title}" class="standings-logo"><h1 class="standings-title">${tournament.title}</h1></div><button class="back-to-grid-btn">العودة للبطولات</button></div><div id="standings-tables-container">${tablesHTML}</div>`;
+    standingsDisplayContainer.innerHTML = `<div class="standings-header"><div class="standings-title-info"><img src="${tournament.image}" alt="${tournament.title}" class="standings-logo"><h1 class="standings-title">${tournament.title}</h1></div><button class="back-to-grid-btn">العودة للبطولات</button></div><div id="standings-tables-container">${tablesHTML}</div>`;
     standingsDisplayContainer.querySelector('.back-to-grid-btn').addEventListener('click', () => {
         standingsDisplayContainer.style.display = 'none';
         tournamentsGridContainer.style.display = 'block';
@@ -211,10 +211,10 @@ function displayStandings(tournament) {
 
 function displayTransfers(transfers) {
     if (!transfers || transfers.length === 0) {
-        transfersContainer.textContent = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
+        transfersContainer.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
         return;
     }
-    transfersContainer.textContent = transfers.map(item => {
+    transfersContainer.innerHTML = transfers.map(item => {
         const priceOrType = item.transfer_price ? item.transfer_price : item.transfer_type;
         const badgeClass = item.transfer_type === 'انتقال حر' ? 'free' : '';
         return `
@@ -246,10 +246,10 @@ function displayTransfers(transfers) {
 
 function renderInfo(info, match) {
     const panel = document.getElementById('tab-info');
-    if (!info || !match) { panel.textContent = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>"; return; }
+    if (!info || !match) { panel.innerHTML = "<p style='text-align:center;'>التفاصيل غير متاحة.</p>"; return; }
     const matchTime = new Date(match['Time-Start']);
     const formattedDateTime = matchTime.toLocaleString('ar-EG', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true });
-    panel.textContent = `
+    panel.innerHTML = `
     <div class="info-container grid grid-cols-1 sm:grid-cols-2 gap-3 p-1 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 rounded-lg">
   <div class="info-item flex">
     <span class="info-label font-semibold text-gray-700 dark:text-gray-300 w-24">البطولة:</span>
@@ -281,7 +281,7 @@ function renderInfo(info, match) {
 
 function renderLineup(lineup, match) {
     const panel = document.getElementById('tab-lineup');
-    if (!lineup) { panel.textContent = "<p style='text-align:center;'>التشكيلة غير متاحة.</p>"; return; }
+    if (!lineup) { panel.innerHTML = "<p style='text-align:center;'>التشكيلة غير متاحة.</p>"; return; }
     const renderTeam = (teamData, teamInfo) => {
         const starters = teamData.Team.filter(p => p.Status === 'Starting');
         const substitutes = teamData.Team.filter(p => p.Status === 'Substitute');
@@ -317,13 +317,13 @@ function renderLineup(lineup, match) {
   `;
     };
     const currentMatch = allMatchesData.find(m => m['Match-id'] == matchDetailsView.dataset.matchId);
-    if (currentMatch) { panel.textContent = `<div class="lineup-container">${renderTeam(lineup['Away-Team'], currentMatch['Team-Left'])}${renderTeam(lineup['Home-Team'], currentMatch['Team-Right'])}</div>`; }
+    if (currentMatch) { panel.innerHTML = `<div class="lineup-container">${renderTeam(lineup['Away-Team'], currentMatch['Team-Left'])}${renderTeam(lineup['Home-Team'], currentMatch['Team-Right'])}</div>`; }
 }
 
 function renderEvents(events) {
     const panel = document.getElementById('tab-events');
-    if (!events || events.length === 0) { panel.textContent = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>"; return; }
-    panel.textContent = `<div class="events-container"><div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>${events.map(event => {
+    if (!events || events.length === 0) { panel.innerHTML = "<p style='text-align:center;'>لا توجد أحداث مسجلة.</p>"; return; }
+    panel.innerHTML = `<div class="events-container"><div class="timeline-line bg-gray-200 dark:bg-gray-900"></div>${events.map(event => {
         let extraPlayerHTML = '';
         if (event['Event-Player'].Extra.length > 0) {
             const prefix = event['Event-Name'] === 'هدف' ? 'صناعة: ' : '';
@@ -335,7 +335,7 @@ function renderEvents(events) {
 
 function renderStats(statsRight, statsLeft) {
     const panel = document.getElementById('tab-stats');
-    if (!statsRight || !statsLeft) { panel.textContent = "<p style='text-align:center;'>لا توجد إحصائيات متاحة.</p>"; return; }
+    if (!statsRight || !statsLeft) { panel.innerHTML = "<p style='text-align:center;'>لا توجد إحصائيات متاحة.</p>"; return; }
     const combinedStats = statsRight.map((statRight, index) => ({ name: statRight.Name, valueRight: statRight.Value, valueLeft: (statsLeft[index] || { Value: '0' }).Value }));
     const maxValues = {};
     combinedStats.forEach(stat => {
@@ -343,7 +343,7 @@ function renderStats(statsRight, statsLeft) {
         const pLeft = parseFloat(stat.valueLeft) || 0;
         maxValues[stat.name] = Math.max(pRight, pLeft, 1);
     });
-    panel.textContent = `<div class="stats-container">${combinedStats.map(stat => {
+    panel.innerHTML = `<div class="stats-container">${combinedStats.map(stat => {
         const pRight = parseFloat(stat.valueRight) || 0;
         const pLeft = parseFloat(stat.valueLeft) || 0;
         const maxWidth = maxValues[stat.name];
@@ -360,7 +360,7 @@ function renderStats(statsRight, statsLeft) {
 // --- FETCH FUNCTIONS ---
 async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
-    matchesContainer.textContent = '';
+    matchesContainer.innerHTML = '';
     datePicker.value = dateString;
     const apiUrl = `${API_DOMAIN}/api/matches/?date=${dateString}&time=${userTimeZone}`;
     try {
@@ -371,7 +371,7 @@ async function fetchMatches(dateString) {
         displayMatches(allMatchesData);
     } catch (error) {
         console.error("Fetch Matches Error:", error);
-        matchesContainer.textContent = `<p style="text-align:center; color:red;">حدث خطأ في تحميل المباريات.</p>`;
+        matchesContainer.innerHTML = `<p style="text-align:center; color:red;">حدث خطأ في تحميل المباريات.</p>`;
     } finally {
         matchesLoadingSpinner.style.display = 'none';
     }
@@ -380,8 +380,8 @@ async function fetchMatches(dateString) {
 async function fetchNews(page = 1, isLoadMore = false) {
     if (!isLoadMore) {
         newsLoadingSpinner.style.display = 'flex';
-        newsContainer.textContent = '';
-        newsLoadMoreContainer.textContent = '';
+        newsContainer.innerHTML = '';
+        newsLoadMoreContainer.innerHTML = '';
         allNewsData = [];
         newsCurrentPage = 1;
     }
@@ -396,21 +396,21 @@ async function fetchNews(page = 1, isLoadMore = false) {
             displayNews();
             newsCurrentPage = page;
             if (newsData.length > 0) {
-                 newsLoadMoreContainer.textContent = `<button id="load-more-news-btn" class="load-more-btn">تحميل المزيد</button>`;
+                 newsLoadMoreContainer.innerHTML = `<button id="load-more-news-btn" class="load-more-btn">تحميل المزيد</button>`;
                  document.getElementById('load-more-news-btn').addEventListener('click', () => fetchNews(newsCurrentPage + 1, true));
             } else {
-                 newsLoadMoreContainer.textContent = '';
+                 newsLoadMoreContainer.innerHTML = '';
             }
         } else {
             if (isLoadMore) {
-                 newsLoadMoreContainer.textContent = `<p>لا يوجد المزيد من الأخبار.</p>`;
+                 newsLoadMoreContainer.innerHTML = `<p>لا يوجد المزيد من الأخبار.</p>`;
             } else {
-                 newsContainer.textContent = '<p style="text-align:center;">لا توجد أخبار حاليًا.</p>';
+                 newsContainer.innerHTML = '<p style="text-align:center;">لا توجد أخبار حاليًا.</p>';
             }
         }
     } catch (error) {
         console.error("Fetch News Error:", error);
-        newsContainer.textContent = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الأخبار.</p>';
+        newsContainer.innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الأخبار.</p>';
     } finally {
         newsLoadingSpinner.style.display = 'none';
         if (loadMoreBtn) loadMoreBtn.disabled = false;
@@ -420,8 +420,8 @@ async function fetchNews(page = 1, isLoadMore = false) {
 async function fetchVideos(page = 1, isLoadMore = false) {
     if (!isLoadMore) {
         videosLoadingSpinner.style.display = 'flex';
-        videosContainer.textContent = '';
-        videosLoadMoreContainer.textContent = '';
+        videosContainer.innerHTML = '';
+        videosLoadMoreContainer.innerHTML = '';
         allVideosData = [];
         videosCurrentPage = 1;
     }
@@ -435,18 +435,18 @@ async function fetchVideos(page = 1, isLoadMore = false) {
             allVideosData = allVideosData.concat(videosData);
             displayVideos();
             videosCurrentPage = page;
-             videosLoadMoreContainer.textContent = `<button id="load-more-videos-btn" class="load-more-btn">تحميل المزيد</button>`;
+             videosLoadMoreContainer.innerHTML = `<button id="load-more-videos-btn" class="load-more-btn">تحميل المزيد</button>`;
              document.getElementById('load-more-videos-btn').addEventListener('click', () => fetchVideos(videosCurrentPage + 1, true));
         } else {
             if (isLoadMore) {
-                videosLoadMoreContainer.textContent = `<p>لا يوجد المزيد من الفيديوهات.</p>`;
+                videosLoadMoreContainer.innerHTML = `<p>لا يوجد المزيد من الفيديوهات.</p>`;
             } else {
-                videosContainer.textContent = '<p style="text-align:center;">لا توجد فيديوهات حاليًا.</p>';
+                videosContainer.innerHTML = '<p style="text-align:center;">لا توجد فيديوهات حاليًا.</p>';
             }
         }
     } catch (error) {
         console.error("Fetch Videos Error:", error);
-        videosContainer.textContent = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الفيديوهات.</p>';
+        videosContainer.innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الفيديوهات.</p>';
     } finally {
         videosLoadingSpinner.style.display = 'none';
         if (loadMoreBtn) loadMoreBtn.disabled = false;
@@ -469,7 +469,7 @@ async function fetchTournaments() {
         }
     } catch (error) {
         console.error("Fetch Tournaments Error:", error);
-        tournamentsGridContainer.textContent = '<p style="text-align:center; color:red;">فشل تحميل البطولات.</p>';
+        tournamentsGridContainer.innerHTML = '<p style="text-align:center; color:red;">فشل تحميل البطولات.</p>';
     } finally {
         tournamentsLoadingSpinner.style.display = 'none';
         tournamentsGridContainer.style.display = 'block';
@@ -478,7 +478,7 @@ async function fetchTournaments() {
 
 async function fetchTransfers() {
     transfersLoadingSpinner.style.display = 'flex';
-    transfersContainer.textContent = '';
+    transfersContainer.innerHTML = '';
     try {
         const response = await fetch('https://ko.best-goal.live/transation.php');
         if (!response.ok) throw new Error('Network response was not ok');
@@ -490,14 +490,14 @@ async function fetchTransfers() {
         }
     } catch (error) {
         console.error("Fetch Transfers Error:", error);
-        transfersContainer.textContent = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الانتقالات.</p>';
+        transfersContainer.innerHTML = '<p style="text-align:center; color:red;">حدث خطأ في تحميل الانتقالات.</p>';
     } finally {
         transfersLoadingSpinner.style.display = 'none';
     }
 }
 async function fetchEventsAndLineup(match) {
     ['#tab-info', '#tab-lineup', '#tab-events'].forEach(s => {
-        document.querySelector(s).textContent = '<div class="spinner-container"><div class="spinner"></div></div>';
+        document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
     const apiUrl = `${API_DOMAIN}/api/matches/events/?MatchID=${match['Match-id']}&time=${userTimeZone}`;
@@ -535,14 +535,14 @@ async function fetchEventsAndLineup(match) {
 
     } catch (e) {
         console.error("Fetch Details Error:", e);
-        document.querySelector('#tab-info').textContent = '<p style="text-align:center; color:red;">فشل تحميل التفاصيل</p>';
-        document.querySelector('#tab-lineup').textContent = '<p style="text-align:center; color:red;">فشل تحميل التشكيلة</p>';
-        document.querySelector('#tab-events').textContent = '<p style="text-align:center; color:red;">فشل تحميل الأحداث</p>';
+        document.querySelector('#tab-info').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التفاصيل</p>';
+        document.querySelector('#tab-lineup').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل التشكيلة</p>';
+        document.querySelector('#tab-events').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الأحداث</p>';
     }
 }
 
 async function fetchStats(matchId) {
-    document.querySelector('#tab-stats').textContent = '<div class="spinner-container"><div class="spinner"></div></div>';
+    document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     const apiUrl = `${API_DOMAIN}/api/matches/stats/?MatchID=${matchId}`;
     try {
         const response = await fetch(apiUrl);
@@ -550,7 +550,7 @@ async function fetchStats(matchId) {
         renderStats(data['Statistics-1'], data['Statistics-2']);
     } catch (e) {
         console.error("Fetch Stats Error:", e);
-        document.querySelector('#tab-stats').textContent = '<p style="text-align:center; color:red;">فشل تحميل الإحصائيات</p>';
+        document.querySelector('#tab-stats').innerHTML = '<p style="text-align:center; color:red;">فشل تحميل الإحصائيات</p>';
     }
 }
 
@@ -573,7 +573,7 @@ async function fetchAndDisplayStreams(match) {
             tabContentContainer.insertAdjacentHTML('beforeend', `<div id="tab-live" class="tab-panel dynamic-panel"><div id="live-stream-buttons"></div></div>`);
 
             const liveStreamButtonsContainer = document.getElementById('live-stream-buttons');
-            liveStreamButtonsContainer.textContent = streams.map(stream => 
+            liveStreamButtonsContainer.innerHTML = streams.map(stream => 
                 `<button class="stream-button" data-url="${stream.streamUrl}" data-type="${stream.streamType}" data-keyid="${stream.keyId || ''}" data-key="${stream.key || ''}">${stream.channelName}</button>`
             ).join('');
         }
@@ -603,12 +603,12 @@ async function deleteStream(matchId, streamId) {
 }
 
 async function refreshAdminStreamList(matchId) {
-    currentStreamsList.textContent = '<div class="spinner-container"><div class="spinner"></div></div>';
+    currentStreamsList.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     const streamsRef = collection(db, "matches", matchId, "streams");
     try {
         const querySnapshot = await getDocs(streamsRef);
         if (querySnapshot.empty) {
-            currentStreamsList.textContent = 'لا توجد سيرفرات حاليًا.';
+            currentStreamsList.innerHTML = 'لا توجد سيرفرات حاليًا.';
             return;
         }
         let html = '';
@@ -616,9 +616,9 @@ async function refreshAdminStreamList(matchId) {
             const stream = doc.data();
             html += `<div class="current-stream-item bg-white dark:bg-gray-800 mt-2" style="border-radius: 12px;" ><span>${stream.channelName} (${stream.streamType})</span><div class="stream-actions"><button class="edit-stream-btn" data-id="${doc.id}">تعديل</button><button class="delete-stream-btn" data-id="${doc.id}">حذف</button></div></div>`;
         });
-        currentStreamsList.textContent = html;
+        currentStreamsList.innerHTML = html;
     } catch (error) {
-        currentStreamsList.textContent = "<p style='color:red'>فشل تحميل قائمة السيرفرات.</p>";
+        currentStreamsList.innerHTML = "<p style='color:red'>فشل تحميل قائمة السيرفرات.</p>";
     }
 }
 
@@ -642,13 +642,13 @@ function showMatchDetailsPage(match) {
             : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
               : 'status-live';
   if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed'){
-    modalMatchCard.textContent = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   } else {
-    modalMatchCard.textContent = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+    modalMatchCard.innerHTML = `<div class="modal-team"><img src="${API_DOMAIN}${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src="${API_DOMAIN}${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
   }
-    detailsTabsContainer.textContent = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
-    detailsTabsMenu.textContent = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
-    tabContentContainer.textContent = '<div id="tab-info" class="tab-panel"></div><div id="tab-lineup" class="tab-panel"></div><div id="tab-events" class="tab-panel"></div><div id="tab-stats" class="tab-panel"></div>';
+    detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
+    detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
+    tabContentContainer.innerHTML = '<div id="tab-info" class="tab-panel"></div><div id="tab-lineup" class="tab-panel"></div><div id="tab-events" class="tab-panel"></div><div id="tab-stats" class="tab-panel"></div>';
 
     document.querySelector('#details-tabs-container .tab-btn[data-tab="info"]').classList.add('active');
     document.querySelector('#details-tabs-menu .tab-btn[data-tab="info"]').classList.add('active');
@@ -664,7 +664,7 @@ function showMatchDetailsPage(match) {
 }
 
 function showNewsArticle(article) {
-    newsArticleContent.textContent = `
+    newsArticleContent.innerHTML = `
         <h1 class="article-title">${article.title}</h1>
         <img src="${article.image}" alt="${article.title}" class="article-image">
         <div class="article-body">${article.content}</div>
@@ -796,7 +796,7 @@ function handleTabClick(e) {
             detailsTabsMenu.classList.remove('open');
             
             const matchId = matchDetailsView.dataset.matchId;
-            if (tabName === 'stats' && targetPanel.textContent.trim() === '') {
+            if (tabName === 'stats' && targetPanel.innerHTML.trim() === '') {
                 fetchStats(matchId);
             }
         }
@@ -930,8 +930,6 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
-
-
 
 
 
