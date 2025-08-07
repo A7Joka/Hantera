@@ -911,8 +911,8 @@ function validateStreamUrl(url) {
 document.getElementById('admin-login-btn').addEventListener('click', () => {
     const password = sanitizeInput(document.getElementById('admin-password-input').value);
     const matchId = adminModal.dataset.currentMatchId;
+  async function yourFunctionName() {
     const hashed = await hashPassword(password);
-
     if (hashed === ADMIN_PASSWORD) {
         adminPasswordSection.style.display = 'none';
         adminContentSection.style.display = 'block';
@@ -920,6 +920,8 @@ document.getElementById('admin-login-btn').addEventListener('click', () => {
     } else {
         alert('كلمة المرور خاطئة!');
     }
+    }
+
 });
 addStreamForm.addEventListener('submit', async (e) => {
 const channelNameRaw = document.getElementById('stream-name').value;
@@ -1007,6 +1009,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
