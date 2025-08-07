@@ -95,7 +95,11 @@ const backToNewsBtn = document.getElementById('backToNewsBtn');
 // --- RENDER & DISPLAY FUNCTIONS ---
 function displayMatches(matches) {
     if (!matches || matches.length === 0) {
-        matchesContainer.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
+const p = document.createElement("p");
+p.textContent = "لا توجد مباريات في هذا اليوم.";
+p.style.textAlign = "center";
+matchesContainer.innerHTML = ""; // امسح المحتوى الحالي
+matchesContainer.appendChild(p);
         return;
     }
     const matchesByCup = matches.reduce((acc, match) => {
@@ -843,6 +847,9 @@ tabContentContainer.addEventListener('click', (e) => {
         videoPlayerModal.style.display = 'flex';
     }
 });
+function sanitizeInput(input) {
+    return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+}
 document.getElementById('admin-login-btn').addEventListener('click', () => {
     const password = document.getElementById('admin-password-input').value;
     const matchId = adminModal.dataset.currentMatchId;
@@ -859,12 +866,12 @@ addStreamForm.addEventListener('submit', async (e) => {
     const matchId = adminModal.dataset.currentMatchId;
     const streamId = document.getElementById('stream-id').value;
     const streamData = {
-        channelName: document.getElementById('stream-name').value,
-        streamType: document.getElementById('stream-type').value,
-        streamUrl: document.getElementById('stream-url').value,
-        keyId: document.getElementById('stream-key-id').value || null,
-        key: document.getElementById('stream-key').value || null,
-    };
+      channelName: sanitizeInput(document.getElementById('stream-name').value),
+      streamType: document.getElementById('stream-type').value,
+      streamUrl: sanitizeInput(document.getElementById('stream-url').value),
+      keyId: sanitizeInput(document.getElementById('stream-key-id').value || ''),
+      key: sanitizeInput(document.getElementById('stream-key').value || '')
+};
     saveStreamBtn.textContent = "جاري الحفظ...";
     saveStreamBtn.disabled = true;
     try {
@@ -930,6 +937,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
