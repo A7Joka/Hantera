@@ -32,7 +32,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const ADMIN_PASSWORD = "Vbnb123@";
+const ADMIN_PASSWORD = "42e05c2255e42ec55f171189d27c5bd36fcb5ef3f58e1a2bbefdfcbb49327dbb";
 const API_DOMAIN = 'https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com';
 let allMatchesData = [];
 let currentDate = new Date();
@@ -188,7 +188,14 @@ function displayNews() {
 function displayVideos() {
     videosContainer.innerHTML = allVideosData.map(item => `<div class="video-card bg-gray-200 dark:bg-gray-900" data-m3u8-url="${item.m3u8_url}"><div class="video-thumbnail-wrapper"><img src="${item.imageurl}" alt="${item.title}" class="video-thumbnail"><div class="play-icon"></div></div><div class="video-content"><h2 class="video-title">${item.title}</h2><p class="video-category">${item.category}</p></div></div>`).join('');
 }
-
+async function hashPassword(password) {
+    const encoder = new TextEncoder();
+    const data = encoder.encode(password);
+    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    return hashHex;
+}
 function displayTournamentsGrid(tournaments) {
     tournamentsGrid.innerHTML = tournaments.map((tour, index) => `<div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}"><img src="${tour.image}" alt="${tour.title}" class="tournament-card-image"><h3 class="tournament-card-title">${tour.title}</h3></div>`).join('');
 }
@@ -577,9 +584,18 @@ async function fetchAndDisplayStreams(match) {
             tabContentContainer.insertAdjacentHTML('beforeend', `<div id="tab-live" class="tab-panel dynamic-panel"><div id="live-stream-buttons"></div></div>`);
 
             const liveStreamButtonsContainer = document.getElementById('live-stream-buttons');
-            liveStreamButtonsContainer.innerHTML = streams.map(stream => 
-                `<button class="stream-button" data-url="${stream.streamUrl}" data-type="${stream.streamType}" data-keyid="${stream.keyId || ''}" data-key="${stream.key || ''}">${stream.channelName}</button>`
-            ).join('');
+            liveStreamButtonsContainer.innerHTML = '';
+streams.forEach(stream => {
+    const button = document.createElement('button');
+    button.className = 'stream-button';
+    button.dataset.url = stream.streamUrl;
+    button.dataset.type = stream.streamType;
+    button.dataset.keyid = stream.keyId || '';
+    button.dataset.key = stream.key || '';
+    button.textContent = stream.channelName;
+    liveStreamButtonsContainer.appendChild(button);
+});
+
         }
     } catch (error) {
         console.error("Error fetching streams from Firebase:", error);
@@ -616,10 +632,38 @@ async function refreshAdminStreamList(matchId) {
             return;
         }
         let html = '';
-        querySnapshot.forEach((doc) => {
-            const stream = doc.data();
-            html += `<div class="current-stream-item bg-white dark:bg-gray-800 mt-2" style="border-radius: 12px;" ><span>${stream.channelName} (${stream.streamType})</span><div class="stream-actions"><button class="edit-stream-btn" data-id="${doc.id}">تعديل</button><button class="delete-stream-btn" data-id="${doc.id}">حذف</button></div></div>`;
-        });
+        querySnapshot.forEach((docSnap) => {
+    const stream = docSnap.data();
+
+    const item = document.createElement('div');
+    item.className = "current-stream-item bg-white dark:bg-gray-800 mt-2";
+    item.style.borderRadius = "12px";
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = `${stream.channelName} (${stream.streamType})`;
+
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = "stream-actions";
+
+    const editBtn = document.createElement('button');
+    editBtn.className = "edit-stream-btn";
+    editBtn.dataset.id = docSnap.id;
+    editBtn.textContent = "تعديل";
+
+    const deleteBtn = document.createElement('button');
+    deleteBtn.className = "delete-stream-btn";
+    deleteBtn.dataset.id = docSnap.id;
+    deleteBtn.textContent = "حذف";
+
+    actionsDiv.appendChild(editBtn);
+    actionsDiv.appendChild(deleteBtn);
+
+    item.appendChild(textSpan);
+    item.appendChild(actionsDiv);
+
+    currentStreamsList.appendChild(item);
+});
+
         currentStreamsList.innerHTML = html;
     } catch (error) {
         currentStreamsList.innerHTML = "<p style='color:red'>فشل تحميل قائمة السيرفرات.</p>";
@@ -848,12 +892,28 @@ tabContentContainer.addEventListener('click', (e) => {
     }
 });
 function sanitizeInput(input) {
-    return input.replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    return input
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#x27;")
+        .replace(/\//g, "&#x2F;")
+        .replace(/`/g, "");
 }
+function validateChannelName(name) {
+    return /^[a-zA-Z0-9\u0600-\u06FF _\-()#@!]{1,100}$/.test(name);
+}
+
+function validateStreamUrl(url) {
+    return /^https?:\/\/[^<>"'`]+$/.test(url);
+}
+
 document.getElementById('admin-login-btn').addEventListener('click', () => {
-    const password = document.getElementById('admin-password-input').value;
+    const password = sanitizeInput(document.getElementById('admin-password-input').value);
     const matchId = adminModal.dataset.currentMatchId;
-    if (password === ADMIN_PASSWORD) {
+    const hashed = await hashPassword(password);
+
+    if (hashed === ADMIN_PASSWORD) {
         adminPasswordSection.style.display = 'none';
         adminContentSection.style.display = 'block';
         refreshAdminStreamList(matchId);
@@ -862,6 +922,16 @@ document.getElementById('admin-login-btn').addEventListener('click', () => {
     }
 });
 addStreamForm.addEventListener('submit', async (e) => {
+const channelNameRaw = document.getElementById('stream-name').value;
+const streamUrlRaw = document.getElementById('stream-url').value;
+if (!validateChannelName(channelNameRaw)) {
+    alert("اسم القناة غير صالح. استخدم فقط حروف وأرقام وبعض الرموز المقبولة.");
+    return;
+}
+if (!validateStreamUrl(streamUrlRaw)) {
+    alert("رابط البث غير صالح أو يحتوي على رموز ممنوعة.");
+    return;
+}
     e.preventDefault();
     const matchId = adminModal.dataset.currentMatchId;
     const streamId = document.getElementById('stream-id').value;
@@ -871,7 +941,7 @@ addStreamForm.addEventListener('submit', async (e) => {
       streamUrl: sanitizeInput(document.getElementById('stream-url').value),
       keyId: sanitizeInput(document.getElementById('stream-key-id').value || ''),
       key: sanitizeInput(document.getElementById('stream-key').value || '')
-};
+    };
     saveStreamBtn.textContent = "جاري الحفظ...";
     saveStreamBtn.disabled = true;
     try {
@@ -937,6 +1007,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
