@@ -32,7 +32,7 @@ const firebaseConfig = {
 };
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-const ADMIN_PASSWORD = "42e05c2255e42ec55f171189d27c5bd36fcb5ef3f58e1a2bbefdfcbb49327dbb";
+const ADMIN_PASSWORD = "Vbnb123@";
 const API_DOMAIN = 'https://yanb8.bassamnetflix2.workers.dev/https://www.yanb8.com';
 let allMatchesData = [];
 let currentDate = new Date();
@@ -187,14 +187,6 @@ function displayNews() {
 
 function displayVideos() {
     videosContainer.innerHTML = allVideosData.map(item => `<div class="video-card bg-gray-200 dark:bg-gray-900" data-m3u8-url="${item.m3u8_url}"><div class="video-thumbnail-wrapper"><img src="${item.imageurl}" alt="${item.title}" class="video-thumbnail"><div class="play-icon"></div></div><div class="video-content"><h2 class="video-title">${item.title}</h2><p class="video-category">${item.category}</p></div></div>`).join('');
-}
-async function hashPassword(password) {
-    const encoder = new TextEncoder();
-    const data = encoder.encode(password);
-    const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-    const hashArray = Array.from(new Uint8Array(hashBuffer));
-    const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
-    return hashHex;
 }
 function displayTournamentsGrid(tournaments) {
     tournamentsGrid.innerHTML = tournaments.map((tour, index) => `<div class="tournament-card bg-gray-200 dark:bg-gray-900" data-index="${index}"><img src="${tour.image}" alt="${tour.title}" class="tournament-card-image"><h3 class="tournament-card-title">${tour.title}</h3></div>`).join('');
@@ -910,18 +902,14 @@ function validateStreamUrl(url) {
 
 document.getElementById('admin-login-btn').addEventListener('click', () => {
     const password = sanitizeInput(document.getElementById('admin-password-input').value);
-    const matchId = adminModal.dataset.currentMatchId;
-  async function yourFunctionName() {
-    const hashed = await hashPassword(password);
-    if (hashed === ADMIN_PASSWORD) {
+    const matchId = adminModal.dataset.currentMatchId;    
+    if (password === ADMIN_PASSWORD) {
         adminPasswordSection.style.display = 'none';
         adminContentSection.style.display = 'block';
         refreshAdminStreamList(matchId);
     } else {
         alert('كلمة المرور خاطئة!');
     }
-    }
-
 });
 addStreamForm.addEventListener('submit', async (e) => {
 const channelNameRaw = document.getElementById('stream-name').value;
@@ -1009,6 +997,7 @@ export {
   showNewsArticle,
   getUserTimeZoneOffset
 };
+
 
 
 
