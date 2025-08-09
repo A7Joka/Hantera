@@ -748,7 +748,7 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `https://ko.best-goal.live/state.php?date=${dateString}`;
+    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?date=${dateString}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
@@ -900,7 +900,7 @@ async function fetchEventsAndLineup(match) {
         document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
-    const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
+    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -942,7 +942,7 @@ async function fetchEventsAndLineup(match) {
 
 async function fetchStats(Matchid) {
     document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const apiUrl = `https://ko.best-goal.live/state.php?match_id=${Matchid}`;
+    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?match_id=${Matchid}`;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -1398,6 +1398,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
