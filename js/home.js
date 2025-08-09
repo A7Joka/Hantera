@@ -9,7 +9,6 @@ import {
   showMatchDetailsPage,
   displayStandings,
   showNewsArticle,
-  getUserTimeZoneOffset
 } from './script.js';
 let alllMatchesData = [];
 let alllNewsData = [];
@@ -19,22 +18,22 @@ const htrls = document.getElementById('home-transfers-loading-spinner');
 const hnels = document.getElementById('home-news-loading-spinner');
 const hvils = document.getElementById('home-videos-loading-spinner');
 const htols = document.getElementById('home-tournaments-loading-spinner');
-const userTimeZone = getUserTimeZoneOffset();
 // 1. تحميل المباريات
 async function loadMatches() {
-      hmals.style.display = 'flex';
-const container = document.getElementById("home-matches-container");
+  hmals.style.display = 'flex';
+  const container = document.getElementById("home-matches-container");
   try {
-    const res = await fetch(`https://corsproxy.io/?https://www.yanb8.com/api/matches/?date=today&time=${userTimeZone}`);
+    const res = await fetch(`https://ko.best-goal.live/state.php`);
     const json = await res.json();
-    const matches = json["STING-WEB-Matches"].slice(0, 5);
+    const allMatches = json.Leagues.flatMap(league => league.Matches || []);
+    const matches = allMatches.slice(0, 5);
     alllMatchesData = matches;
     matches.forEach(match => {
       const card = createMatchCard(match);
       container.appendChild(card);
     });
     if (!matches || matches.length === 0) {
-container.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
+      container.innerHTML = `<p style="text-align:center;">لا توجد مباريات في هذا اليوم.</p>`;
       return;
     }
     const section = container.parentElement;
@@ -56,14 +55,14 @@ container.innerHTML = `<p style="text-align:center;">لا توجد مباريا�
     container.innerHTML = `<p class="text-red-500">فشل تحميل المباريات</p>`;
     console.error("Matches Error:", err);
   } finally {
-        hmals.style.display = 'none';
-    }
+    hmals.style.display = 'none';
+  }
 }
 
 // 2. تحميل الانتقالات
 async function loadTransfers() {
-        htrls.style.display = 'flex';
-const container = document.getElementById("home-transfers-container");
+  htrls.style.display = 'flex';
+  const container = document.getElementById("home-transfers-container");
   try {
     const res = await fetch("https://ko.best-goal.live/transation.php");
     const json = await res.json();
@@ -74,8 +73,8 @@ const container = document.getElementById("home-transfers-container");
       container.appendChild(card);
     });
     if (!transfers || transfers.length === 0) {
-        container.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
-        return;
+      container.innerHTML = `<p style="text-align:center;">لا توجد انتقالات حالياً.</p>`;
+      return;
     }
     const section = container.parentElement;
     const moreWrapper = document.createElement("div");
@@ -87,22 +86,22 @@ const container = document.getElementById("home-transfers-container");
     container.innerHTML = `<p class="text-red-500">فشل تحميل الانتقالات</p>`;
     console.error("Transfers Error:", err);
   } finally {
-        htrls.style.display = 'none';
-    }
+    htrls.style.display = 'none';
+  }
 }
 
 // 3. تحميل الأخبار
 async function loadNews() {
-        hnels.style.display = 'flex';
-const container = document.getElementById("home-news-container");
+  hnels.style.display = 'flex';
+  const container = document.getElementById("home-news-container");
   try {
     const res = await fetch("https://ko.best-goal.live/news.php");
     const data = await res.json();
     const news = data.slice(0, 3);
     alllNewsData = news;
 
-news.forEach((article, index) => {
-  const card = createNewsCard(article, index);
+    news.forEach((article, index) => {
+      const card = createNewsCard(article, index);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -112,7 +111,7 @@ news.forEach((article, index) => {
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
       e.preventDefault();
-    switchView("news-view");
+      switchView("news-view");
       const newsCard = e.target.closest('.news-card');
       if (newsCard) {
         const newsIndex = newsCard.dataset.newsIndex;
@@ -126,14 +125,14 @@ news.forEach((article, index) => {
     container.innerHTML = `<p class="text-red-500">فشل تحميل الأخبار</p>`;
     console.error("News Error:", err);
   } finally {
-        hnels.style.display = 'none';
-    }
+    hnels.style.display = 'none';
+  }
 }
 
 // 4. تحميل الفيديوهات
-async function loadVideos() {     
+async function loadVideos() {
   hvils.style.display = 'flex';
-const container = document.getElementById("home-videos-container");
+  const container = document.getElementById("home-videos-container");
   try {
     const res = await fetch("https://ko.best-goal.live/videos.php");
     const data = await res.json();
@@ -150,7 +149,7 @@ const container = document.getElementById("home-videos-container");
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
       e.preventDefault();
-    switchView("videos-view");
+      switchView("videos-view");
       const videoCard = e.target.closest('.video-card');
       if (videoCard) {
         const m3u8Url = videoCard.dataset.m3u8Url;
@@ -165,22 +164,22 @@ const container = document.getElementById("home-videos-container");
     container.innerHTML = `<p class="text-red-500">فشل تحميل الفيديوهات</p>`;
     console.error("Videos Error:", err);
   } finally {
-        hvils.style.display = 'none';
-    }
+    hvils.style.display = 'none';
+  }
 }
 
 // 5. تحميل البطولات
 async function loadTournaments() {
-        htols.style.display = 'flex';
-const container = document.getElementById("home-tournaments-container");
+  htols.style.display = 'flex';
+  const container = document.getElementById("home-tournaments-container");
   try {
     const res = await fetch("https://ko.best-goal.live/get.php");
     const json = await res.json();
     const tournaments = json.data.slice(0, 3);
-alllTournamentsData = tournaments;
+    alllTournamentsData = tournaments;
 
-tournaments.forEach((tournament, index) => {
-  const card = createTournamentCard(tournament, index);
+    tournaments.forEach((tournament, index) => {
+      const card = createTournamentCard(tournament, index);
       container.appendChild(card);
     });
     const section = container.parentElement;
@@ -190,7 +189,7 @@ tournaments.forEach((tournament, index) => {
     section.appendChild(moreWrapper);
     section.addEventListener('click', (e) => {
       e.preventDefault();
-    switchView("tournaments-view");
+      switchView("tournaments-view");
       const card = e.target.closest('.tournament-card');
       if (card) {
         const index = card.dataset.index;
@@ -202,33 +201,50 @@ tournaments.forEach((tournament, index) => {
     container.innerHTML = `<p class="text-red-500">فشل تحميل البطولات</p>`;
     console.error("Tournaments Error:", err);
   } finally {
-        htols.style.display = 'none';
-    }
+    htols.style.display = 'none';
+  }
 }
-
+function convertTo24Hour(timeStr) {
+  const [time, modifier] = timeStr.split(' ');
+  let [hours, minutes] = time.split(':').map(Number);
+  if (modifier === 'م' && hours < 12) hours += 12;
+  if (modifier === 'ص' && hours === 12) hours = 0;
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
 // ---------- الكروت ----------
 function createMatchCard(match) {
-  const API_DOMAIN = "https://www.yanb8.com";
-
-  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'تأجلت';
-  const statusClass = match['Match-Status'] === 'انتهت للتو' ? 'status-finished'
-    : match['Match-Status'] === 'انتهت' ? 'status-finished'
-      : match['Match-Status'] === 'بعد الوقت الاضافي' ? 'status-finished'
-        : match['Match-Status'] === 'بعد ركلات الترجيح' ? 'status-finished'
-          : match['Match-Status'] === 'تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-              : 'status-live';
-
-  const matchTimeOrResult = isNotStarted
-    ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
-    : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
-
+  const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت';
+  const statusClass = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
+    : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
+      : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
+        : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
+          : 'status-live';
+  let matchTimeOrResult;
+  if (!isNotStarted) {
+    matchTimeOrResult = `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
+  } if (isNotStarted) {
+    const matchTimeStr = match['Match-Start-Time'];
+    const matchDateStr = match['match_date_time'];
+    let localTimeString = '—';
+    if (matchTimeStr && matchDateStr) {
+      const datePart = matchDateStr.split(' ')[0];
+      const timePart = convertTo24Hour(matchTimeStr);
+      const fullDateTime = `${datePart}T${timePart}:00+02:00`;
+      const localTime = new Date(fullDateTime);
+      localTimeString = localTime.toLocaleTimeString([], {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: true
+      });
+      matchTimeOrResult = `<div class="match-time">${localTimeString}</div>`;
+    }
+  }
   const div = document.createElement("div");
   div.className = "match-card";
   div.innerHTML = `
   <div class="match-body bg-gray-200 dark:bg-gray-900" data-match-id="${match['Match-id']}">
     <div class="match-part part-logo  bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
+      <img src="${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
     </div>
     <div class="match-part part-name text-gray-800 dark:text-gray-100">
       <span class="team-name">${match['Team-Left']['Name']}</span>
@@ -241,7 +257,7 @@ function createMatchCard(match) {
       <span class="team-name">${match['Team-Right']['Name']}</span>
     </div>
     <div class="match-part part-logo  bg-gray-100 dark:bg-gray-700">
-      <img src="${API_DOMAIN}${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
+      <img src="${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
     </div>
   </div>
   `;
