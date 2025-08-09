@@ -748,7 +748,7 @@ async function fetchMatches(dateString) {
     matchesLoadingSpinner.style.display = 'flex';
     matchesContainer.innerHTML = '';
     datePicker.value = dateString;
-    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?date=${dateString}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?date=${dateString}`;
     try {
         const response = await fetch(apiUrl);
         if (!response.ok) throw new Error('API Error');
@@ -900,7 +900,7 @@ async function fetchEventsAndLineup(match) {
         document.querySelector(s).innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
     });
 
-    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?match_id=${match['Match-id']}`;
 
     try {
         const response = await fetch(apiUrl);
@@ -942,7 +942,7 @@ async function fetchEventsAndLineup(match) {
 
 async function fetchStats(Matchid) {
     document.querySelector('#tab-stats').innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const apiUrl = `https://corsproxy.io/?https://ko.best-goal.live/state.php?match_id=${Matchid}`;
+    const apiUrl = `https://ko.best-goal.live/state.php?match_id=${Matchid}`;
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
@@ -954,40 +954,31 @@ async function fetchStats(Matchid) {
 }
 
 async function fetchAndDisplayStreams(match) {
-    const matchId = match['Match-id'].toString();
-    const streamsRef = collection(db, "matches", matchId, "streams");
+  const matchId = match['Match-id'].toString();
+  const streamsRef = collection(db, "matches", matchId, "streams");
 
-    document.querySelectorAll('.dynamic-tab, .dynamic-panel').forEach(el => el.remove());
+  document.querySelectorAll('.dynamic-tab, .dynamic-panel').forEach(el => el.remove());
 
-    try {
-        const querySnapshot = await getDocs(streamsRef);
-        if (!querySnapshot.empty) {
-            const streams = [];
-            querySnapshot.forEach((doc) => {
-                streams.push({ id: doc.id, ...doc.data() });
-            });
+  try {
+    const querySnapshot = await getDocs(streamsRef);
+    if (!querySnapshot.empty) {
+      const streams = [];
+      querySnapshot.forEach((doc) => {
+        streams.push({ id: doc.id, ...doc.data() });
+      });
 
-            detailsTabsContainer.insertAdjacentHTML('beforeend', `<button class="tab-btn dynamic-tab text-gray-800 dark:text-gray-100" data-tab="live">البث المباشر</button>`);
-            detailsTabsMenu.insertAdjacentHTML('beforeend', `<button class="tab-btn dynamic-tab text-gray-800 dark:text-gray-100" data-tab="live">البث المباشر</button>`);
-            tabContentContainer.insertAdjacentHTML('beforeend', `<div id="tab-live" class="tab-panel dynamic-panel"><div id="live-stream-buttons"></div></div>`);
+      detailsTabsContainer.insertAdjacentHTML('beforeend', `<button class="tab-btn dynamic-tab text-gray-800 dark:text-gray-100" data-tab="live">البث المباشر</button>`);
+      detailsTabsMenu.insertAdjacentHTML('beforeend', `<button class="tab-btn dynamic-tab text-gray-800 dark:text-gray-100" data-tab="live">البث المباشر</button>`);
+      tabContentContainer.insertAdjacentHTML('beforeend', `<div id="tab-live" class="tab-panel dynamic-panel"><div id="live-stream-buttons"></div></div>`);
 
-            const liveStreamButtonsContainer = document.getElementById('live-stream-buttons');
-            liveStreamButtonsContainer.innerHTML = '';
-            streams.forEach(stream => {
-                const button = document.createElement('button');
-                button.className = 'stream-button';
-                button.dataset.url = stream.streamUrl;
-                button.dataset.type = stream.streamType;
-                button.dataset.keyid = stream.keyId || '';
-                button.dataset.key = stream.key || '';
-                button.textContent = stream.channelName;
-                liveStreamButtonsContainer.appendChild(button);
-            });
-
-        }
-    } catch (error) {
-        console.error("Error fetching streams from Firebase:", error);
+      const liveStreamButtonsContainer = document.getElementById('live-stream-buttons');
+      liveStreamButtonsContainer.innerHTML = streams.map(stream =>
+        `<button class="stream-button" data-url="${stream.streamUrl}" data-type="${stream.streamType}" data-keyid="${stream.keyId || ''}" data-key="${stream.key || ''}">${stream.channelName}</button>`
+      ).join('');
     }
+  } catch (error) {
+    console.error("Error fetching streams from Firebase:", error);
+  }
 }
 
 // --- FIREBASE ADMIN FUNCTIONS ---
@@ -1011,53 +1002,24 @@ async function deleteStream(matchId, streamId) {
 }
 
 async function refreshAdminStreamList(matchId) {
-    currentStreamsList.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
-    const streamsRef = collection(db, "matches", matchId, "streams");
-    try {
-        const querySnapshot = await getDocs(streamsRef);
-        if (querySnapshot.empty) {
-            currentStreamsList.innerHTML = 'لا توجد سيرفرات حاليًا.';
-            return;
-        }
-        let html = '';
-        querySnapshot.forEach((docSnap) => {
-            const stream = docSnap.data();
-
-            const item = document.createElement('div');
-            item.className = "current-stream-item bg-white dark:bg-gray-800 mt-2";
-            item.style.borderRadius = "12px";
-
-            const textSpan = document.createElement('span');
-            textSpan.textContent = `${stream.channelName} (${stream.streamType})`;
-
-            const actionsDiv = document.createElement('div');
-            actionsDiv.className = "stream-actions";
-
-            const editBtn = document.createElement('button');
-            editBtn.className = "edit-stream-btn";
-            editBtn.dataset.id = docSnap.id;
-            editBtn.textContent = "تعديل";
-
-            const deleteBtn = document.createElement('button');
-            deleteBtn.className = "delete-stream-btn";
-            deleteBtn.dataset.id = docSnap.id;
-            deleteBtn.textContent = "حذف";
-
-            actionsDiv.appendChild(editBtn);
-            actionsDiv.appendChild(deleteBtn);
-
-            item.appendChild(textSpan);
-            item.appendChild(actionsDiv);
-
-            currentStreamsList.appendChild(item);
-        });
-
-        currentStreamsList.innerHTML = html;
-    } catch (error) {
-        currentStreamsList.innerHTML = "<p style='color:red'>فشل تحميل قائمة السيرفرات.</p>";
+  currentStreamsList.innerHTML = '<div class="spinner-container"><div class="spinner"></div></div>';
+  const streamsRef = collection(db, "matches", matchId, "streams");
+  try {
+    const querySnapshot = await getDocs(streamsRef);
+    if (querySnapshot.empty) {
+      currentStreamsList.innerHTML = 'لا توجد سيرفرات حاليًا.';
+      return;
     }
+    let html = '';
+    querySnapshot.forEach((doc) => {
+      const stream = doc.data();
+      html += `<div class="current-stream-item bg-white dark:bg-gray-800 mt-2" style="border-radius: 12px;" ><span>${stream.channelName} (${stream.streamType})</span><div class="stream-actions"><button class="edit-stream-btn" data-id="${doc.id}">تعديل</button><button class="delete-stream-btn" data-id="${doc.id}">حذف</button></div></div>`;
+    });
+    currentStreamsList.innerHTML = html;
+  } catch (error) {
+    currentStreamsList.innerHTML = "<p style='color:red'>فشل تحميل قائمة السيرفرات.</p>";
+  }
 }
-
 async function openAdminModal(matchId) {
     adminPasswordSection.style.display = 'block';
     adminContentSection.style.display = 'none';
@@ -1078,7 +1040,7 @@ function showMatchDetailsPage(match) {
     if (matchStatus === 'status-not-started' || matchStatus === 'status-postponed') {
         modalMatchCard.innerHTML = `<div class="modal-team"><img src=" ${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">VS</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src=" ${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
     } else {
-        modalMatchCard.innerHTML = `<div class="modal-team"><img src=" ${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src=" ${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
+        modalMatchCard.innerHTML = `<div class="modal-team"><img src=" ${match['Team-Left']['Logo']}" class="modal-team-logo"><span class="modal-team-name">${match['Team-Left']['Name']}</span></div><div class="modal-match-score">${match['Team-Left']['Goal']} ${match['Match-Status'] ${match['Team-Right']['Goal']}</div><div class="modal-team right"><span class="modal-team-name">${match['Team-Right']['Name']}</span><img src=" ${match['Team-Right']['Logo']}" class="modal-team-logo"></div>`;
     }
     detailsTabsContainer.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
     detailsTabsMenu.innerHTML = '<button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="info">التفاصيل</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="lineup">التشكيلة</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="events">الأحداث</button><button class="tab-btn text-gray-800 dark:text-gray-100" data-tab="stats">الإحصائيات</button>';
@@ -1268,22 +1230,22 @@ tournamentsGrid.addEventListener('click', (e) => {
     }
 });
 tabContentContainer.addEventListener('click', (e) => {
-    if (e.target.matches('.stream-button')) {
-        const button = e.target;
-        const setupConfig = {
-            file: button.dataset.url,
-            type: button.dataset.type === 'hls' ? 'hls' : 'dash',
-            width: "100%",
-            height: "100%",
-            autostart: true
-        };
-        if (button.dataset.type === 'dash-drm') {
-            setupConfig.drm = { "clearkey": { "keyId": button.dataset.keyid, "key": button.dataset.key } };
-        }
-        const playerHtml = `<!DOCTYPE html><html><head><link rel="stylesheet" href="./css/jw_ako.css"><style>body,html{margin:0;padding:0;height:100%;width:100%;background-color:#000;}#player{height:100%!important;width:100%!important;}</style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.5/jwplayer.js"><\/script><script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';<\/script></head><body><div id="player"></div><script>jwplayer("player").setup(${JSON.stringify(setupConfig)});<\/script></body></html>`;
-        videoPlayerIframe.srcdoc = playerHtml;
-        videoPlayerModal.style.display = 'flex';
+  if (e.target.matches('.stream-button')) {
+    const button = e.target;
+    const setupConfig = {
+      file: button.dataset.url,
+      type: button.dataset.type === 'hls' ? 'hls' : 'dash',
+      width: "100%",
+      height: "100%",
+      autostart: true
+    };
+    if (button.dataset.type === 'dash-drm') {
+      setupConfig.drm = { "clearkey": { "keyId": button.dataset.keyid, "key": button.dataset.key } };
     }
+    const playerHtml = `<!DOCTYPE html><html><head><link rel="stylesheet" href="./css/jw_ako.css"><style>body,html{margin:0;padding:0;height:100%;width:100%;background-color:#000;}#player{height:100%!important;width:100%!important;}</style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.5/jwplayer.js"><\/script><script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';<\/script></head><body><div id="player"></div><script>jwplayer("player").setup(${JSON.stringify(setupConfig)});<\/script></body></html>`;
+    videoPlayerIframe.srcdoc = playerHtml;
+    videoPlayerModal.style.display = 'flex';
+  }
 });
 function sanitizeInput(input) {
     return input
@@ -1330,7 +1292,7 @@ addStreamForm.addEventListener('submit', async (e) => {
     const streamData = {
         channelName: sanitizeInput(document.getElementById('stream-name').value),
         streamType: document.getElementById('stream-type').value,
-        streamUrl: sanitizeInput(document.getElementById('stream-url').value),
+        streamUrl: document.getElementById('stream-url').value,
         keyId: sanitizeInput(document.getElementById('stream-key-id').value || ''),
         key: sanitizeInput(document.getElementById('stream-key').value || '')
     };
@@ -1354,41 +1316,41 @@ addStreamForm.addEventListener('submit', async (e) => {
 });
 streamTypeSelect.addEventListener('change', () => { drmFields.style.display = streamTypeSelect.value === 'dash-drm' ? 'flex' : 'none'; });
 cancelEditBtn.addEventListener('click', () => {
-    addStreamForm.reset();
-    document.getElementById('stream-id').value = '';
-    formTitle.textContent = "إضافة سيرفر جديد";
-    saveStreamBtn.textContent = "حفظ السيرفر";
-    cancelEditBtn.style.display = 'none';
-    streamTypeSelect.dispatchEvent(new Event('change'));
+  addStreamForm.reset();
+  document.getElementById('stream-id').value = '';
+  formTitle.textContent = "إضافة سيرفر جديد";
+  saveStreamBtn.textContent = "حفظ السيرفر";
+  cancelEditBtn.style.display = 'none';
+  streamTypeSelect.dispatchEvent(new Event('change'));
 });
 currentStreamsList.addEventListener('click', async (e) => {
-    const matchId = adminModal.dataset.currentMatchId;
-    if (e.target.matches('.delete-stream-btn')) {
-        const streamId = e.target.dataset.id;
-        if (confirm('هل أنت متأكد من حذف هذا السيرفر؟')) {
-            await deleteStream(matchId, streamId);
-            await refreshAdminStreamList(matchId);
-        }
+  const matchId = adminModal.dataset.currentMatchId;
+  if (e.target.matches('.delete-stream-btn')) {
+    const streamId = e.target.dataset.id;
+    if (confirm('هل أنت متأكد من حذف هذا السيرفر؟')) {
+      await deleteStream(matchId, streamId);
+      await refreshAdminStreamList(matchId);
     }
-    if (e.target.matches('.edit-stream-btn')) {
-        const streamId = e.target.dataset.id;
-        const streamRef = doc(db, "matches", matchId, "streams", streamId);
-        const docSnap = await getDoc(streamRef);
-        if (docSnap.exists()) {
-            const stream = docSnap.data();
-            document.getElementById('stream-id').value = docSnap.id;
-            document.getElementById('stream-name').value = stream.channelName;
-            document.getElementById('stream-type').value = stream.streamType;
-            document.getElementById('stream-url').value = stream.streamUrl;
-            document.getElementById('stream-key-id').value = stream.keyId || '';
-            document.getElementById('stream-key').value = stream.key || '';
-            formTitle.textContent = "تعديل السيرفر";
-            saveStreamBtn.textContent = "تحديث البيانات";
-            cancelEditBtn.style.display = 'block';
-            streamTypeSelect.dispatchEvent(new Event('change'));
-            addStreamForm.scrollIntoView({ behavior: 'smooth' });
-        }
+  }
+  if (e.target.matches('.edit-stream-btn')) {
+    const streamId = e.target.dataset.id;
+    const streamRef = doc(db, "matches", matchId, "streams", streamId);
+    const docSnap = await getDoc(streamRef);
+    if (docSnap.exists()) {
+      const stream = docSnap.data();
+      document.getElementById('stream-id').value = docSnap.id;
+      document.getElementById('stream-name').value = stream.channelName;
+      document.getElementById('stream-type').value = stream.streamType;
+      document.getElementById('stream-url').value = stream.streamUrl;
+      document.getElementById('stream-key-id').value = stream.keyId || '';
+      document.getElementById('stream-key').value = stream.key || '';
+      formTitle.textContent = "تعديل السيرفر";
+      saveStreamBtn.textContent = "تحديث البيانات";
+      cancelEditBtn.style.display = 'block';
+      streamTypeSelect.dispatchEvent(new Event('change'));
+      addStreamForm.scrollIntoView({ behavior: 'smooth' });
     }
+  }
 });
 
 // --- INITIAL LOAD ---
@@ -1398,30 +1360,3 @@ export {
     displayStandings,
     showNewsArticle,
 };
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
