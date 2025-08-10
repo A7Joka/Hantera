@@ -941,12 +941,13 @@ async function fetchEventsAndLineup(match) {
             console.error("No Match_Info found in details!");
             throw new Error("Missing Match_Info");
         }
-
+console.log("match",match['Match-Status']);
         const matchStatus = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
             : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
                 : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
                     : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
                         : 'status-live';
+console.log("status",matchStatus);
 
         const startTime = new Date(match['Time-Start']);
         const now = new Date();
@@ -1390,6 +1391,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
