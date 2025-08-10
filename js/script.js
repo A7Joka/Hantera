@@ -924,15 +924,15 @@ async function fetchEventsAndLineup(match) {
         if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') {
             const matchTimeStr = match['Match-Start-Time'];
             const matchDateStr = match['match_date_time'];
-            let localTime = null;
+            let localTimes = null;
             if (matchTimeStr && matchDateStr) {
                 const datePart = matchDateStr.split(' ')[0];
                 const timePart = convertTo24Hour(matchTimeStr);
                 const fullDateTime = `${datePart}T${timePart}:00+02:00`;
                 const localTime = new Date(fullDateTime);
-                localTime = localTime;
+                localTimes = localTime;
             }
-            const startTime = localTimeString;
+            const startTime = localTimes;
             const now = new Date();
             const diffInSeconds = (startTime - now) / 1000;
             const shouldFetchStreams = (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
@@ -1372,6 +1372,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
