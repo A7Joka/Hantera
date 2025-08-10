@@ -918,6 +918,9 @@ async function fetchEventsAndLineup(match) {
             if (modifier === 'ص' && hours === 12) hours = 0;
             return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
         }
+        if (matchStatus === 'status-live'){
+            await fetchAndDisplayStreams(match);
+        }
         if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') {
             const matchTimeStr = match['Match-Start-Time'];
             const matchDateStr = match['match_date_time'];
@@ -932,9 +935,7 @@ async function fetchEventsAndLineup(match) {
             const startTime = localTimeString;
             const now = new Date();
             const diffInSeconds = (startTime - now) / 1000;
-            const shouldFetchStreams =
-            matchStatus === 'status-live' ||
-            (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
+            const shouldFetchStreams = (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
             if (shouldFetchStreams) {
                 await fetchAndDisplayStreams(match);
             }
@@ -1371,6 +1372,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
