@@ -95,7 +95,7 @@ const desiredCupsOrder = [
     "دوري أبطال آسيا للنخبة | الأدوار الإقصائية",
     "كأس العالم تحت 20 سنة",
     "كأس العالم للناشئين تحت 17 سنة",
-
+    "درع إتحاد كرة القدم الإنجليزي",
     // Tier S
     "دوري أبطال أوروبا",
     "الدوري الإنجليزي الممتاز",
@@ -468,18 +468,32 @@ function renderLineup(lineup, match) {
                  <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
-          <li class="player-item flex items-center gap-2 cursor-pointer">
-  <div class="relative">
-    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-    
+          li class="player-item flex items-center gap-2 cursor-pointer">
+          <div class="relative">
+    <img src="${p.player.image}" alt="${p.player.title}" 
+         class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+
+    <!-- رقم اللاعب -->
+    ${p.player.player_number ? `
+      <span class="absolute -top-[6px] -right-[8px] w-[18px] h-[18px] rounded-full flex items-center justify-center 
+                    text-[10px] text-gray-500 dark:text-gray-300 
+                    bg-gray-200 dark:bg-gray-800">
+        ${p.player.player_number}
+      </span>
+    ` : ''}
+
+    <!-- التقييم -->
     ${p.rating !== null ? `
-      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
+      <span class="absolute -bottom-[2px] -right-[10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center 
+                    text-white text-[10px]"
         style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
         ${p.rating}
       </span>
     ` : ''}
   </div>
-  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" 
+        title="${p.player.position || ''}">
     ${p.player.title}
   </span>
 </li>`).join('')}
@@ -490,18 +504,32 @@ function renderLineup(lineup, match) {
         <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${substitutes.map(p => `
-            <li class="player-item flex items-center gap-2 cursor-pointer">
-  <div class="relative">
-    <img src="${p.player.image}" alt="${p.player.title}" class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
-    
+            li class="player-item flex items-center gap-2 cursor-pointer">
+          <div class="relative">
+    <img src="${p.player.image}" alt="${p.player.title}" 
+         class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
+
+    <!-- رقم اللاعب -->
+    ${p.player.player_number ? `
+      <span class="absolute -top-[6px] -right-[8px] w-[18px] h-[18px] rounded-full flex items-center justify-center 
+                    text-[10px] text-gray-500 dark:text-gray-300 
+                    bg-gray-200 dark:bg-gray-800">
+        ${p.player.player_number}
+      </span>
+    ` : ''}
+
+    <!-- التقييم -->
     ${p.rating !== null ? `
-      <span class="absolute bottom-[-2px] right-[-10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center text-white text-[10px]"
+      <span class="absolute -bottom-[2px] -right-[10px] w-[22px] h-[13px] rounded-[20px] flex items-center justify-center 
+                    text-white text-[10px]"
         style="background-color: ${p.rating >= 7 ? '#16a34a' : (p.rating >= 5 ? '#facc15' : '#dc2626')};">
         ${p.rating}
       </span>
     ` : ''}
   </div>
-  <span class="player-name text-sm text-gray-800 dark:text-gray-100" title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
+
+  <span class="player-name text-sm text-gray-800 dark:text-gray-100" 
+        title="${p.player.position || ''}">
     ${p.player.title}
   </span>
 </li>`).join('')}
@@ -638,17 +666,17 @@ function renderEvents(events, match) {
         } else {
             if (subPlayer) {
                 if (event.event_name === 'تبديل لاعب') {
-                    extraPlayerHTML = `<div class="event-assist">خارج: ${playerName}</div>`;
+                    extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">خارج: ${playerName}</div>`;
                     playerName = subPlayer;
                 } else {
                     if (event.event_name === 'هدف') {
-                        extraPlayerHTML = `<div class="event-assist">صناعة: ${subPlayer}</div>`;
+                        extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">صناعة: ${subPlayer}</div>`;
                     } else {
-                        extraPlayerHTML = `<div class="event-assist">${subPlayer}</div>`;
+                        extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">${subPlayer}</div>`;
                     }
                 }
             } else {
-                extraPlayerHTML = `<div class="event-assist">${event.event_name}</div>`;
+                extraPlayerHTML = `<div class="event-assist text-xs sm:text-sm md:text-base lg:text-lg font-medium">${event.event_name}</div>`;
             }
             time = cleanMinute(event.minute) || '';
             icon = event.event_icon;
@@ -663,7 +691,7 @@ function renderEvents(events, match) {
         <div class="event-details">
         <div class="event-icon">${icon}</div>
         <div class="event-text">
-        <div class="player-name">${playerName}</div>
+        <div class="player-name text-xs sm:text-sm md:text-base lg:text-lg font-medium">${playerName}</div>
         ${extraPlayerHTML}
         </div>
         <div class="absolute event-icon ${isLeft ? 'right-0' : 'left-0'}" ${event.video_link ? `onclick="window.open('${event.video_link}', '_blank')"` : ''} style="${event.video_link ? 'cursor:pointer;' : ''}">${iconv}</div>
@@ -1360,6 +1388,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
