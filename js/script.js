@@ -95,7 +95,7 @@ const desiredCupsOrder = [
     "دوري أبطال آسيا للنخبة | الأدوار الإقصائية",
     "كأس العالم تحت 20 سنة",
     "كأس العالم للناشئين تحت 17 سنة",
-    "درع إتحاد كرة القدم الإنجليزي",
+"درع إتحاد كرة القدم الإنجليزي",
     // Tier S
     "دوري أبطال أوروبا",
     "الدوري الإنجليزي الممتاز",
@@ -468,7 +468,7 @@ function renderLineup(lineup, match) {
                  <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mb-2">التشكيلة الأساسية</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${starters.map(p => `
-          li class="player-item flex items-center gap-2 cursor-pointer">
+          <li class="player-item flex items-center gap-2 cursor-pointer">
           <div class="relative">
     <img src="${p.player.image}" alt="${p.player.title}" 
          class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
@@ -496,7 +496,8 @@ function renderLineup(lineup, match) {
         title="${p.player.position || ''}">
     ${p.player.title}
   </span>
-</li>`).join('')}
+</li>
+`).join('')}
         </ul>
       </div>
 
@@ -504,8 +505,8 @@ function renderLineup(lineup, match) {
         <div class="text-md font-semibold text-gray-700 dark:text-gray-300 mt-4 mb-2">الاحتياطي</div>
         <ul class="player-list grid grid-cols-1 sm:grid-cols-2 gap-3">
           ${substitutes.map(p => `
-            li class="player-item flex items-center gap-2 cursor-pointer">
-          <div class="relative">
+<li class="player-item flex items-center gap-2 cursor-pointer">
+  <div class="relative">
     <img src="${p.player.image}" alt="${p.player.title}" 
          class="w-8 h-8 rounded-full border border-gray-300 dark:border-gray-600" />
 
@@ -529,10 +530,11 @@ function renderLineup(lineup, match) {
   </div>
 
   <span class="player-name text-sm text-gray-800 dark:text-gray-100" 
-        title="${p.player.position || ''}">
+        title="#${p.player.player_number ? p.player.player_number + ' - ' : ''}${p.player.position || ''}">
     ${p.player.title}
   </span>
-</li>`).join('')}
+</li>
+`).join('')}
         </ul>
         </div>
       </div>
@@ -1388,6 +1390,36 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
