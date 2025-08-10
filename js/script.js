@@ -250,41 +250,6 @@ function displayMatches(matches) {
     }).join('')}
         </div>`).join('');
 }
-function createMatchCard(match) {
-    const isNotStarted = match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت';
-    const statusClass = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
-        : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
-            : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
-                : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
-                    : 'status-live';
-    const matchTimeOrResult = isNotStarted
-        ? `<div class="match-time">${new Date(match['Time-Start']).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true })}</div>`
-        : `<div class="match-result">${match['Team-Left']['Goal']} - ${match['Team-Right']['Goal']}</div>`;
-
-    const div = document.createElement("div");
-    div.className = "match-card";
-    div.innerHTML = `
-  <div class="match-body" data-match-id="${match['Match-id']}">
-    <div class="match-part part-logo">
-      <img src=" ${match['Team-Left']['Logo']}" alt="${match['Team-Left']['Name']}" class="match-logo" />
-    </div>
-    <div class="match-part part-name">
-      <span class="team-name">${match['Team-Left']['Name']}</span>
-    </div>
-    <div class="match-part part-center ${statusClass}">
-      ${matchTimeOrResult}
-      <span class="match-status">${match['Match-Status']}</span>
-    </div>
-    <div class="match-part part-name">
-      <span class="team-name">${match['Team-Right']['Name']}</span>
-    </div>
-    <div class="match-part part-logo">
-      <img src=" ${match['Team-Right']['Logo']}" alt="${match['Team-Right']['Name']}" class="match-logo" />
-    </div>
-  </div>
-  `;
-    return div;
-}
 function displayNews() {
     newsContainer.innerHTML = allNewsData.map((item, index) => `<div class="news-card bg-gray-200 dark:bg-gray-900" data-news-index="${index}"><img src="${item.image}" alt="${item.title}" class="news-image"><div class="news-content"><h2 class="news-title">${item.title}</h2><p class="news-summary">${item.sub_link}</p><p class="news-time">${item.time}</p></div></div>`).join('');
 }
@@ -941,23 +906,38 @@ async function fetchEventsAndLineup(match) {
             console.error("No Match_Info found in details!");
             throw new Error("Missing Match_Info");
         }
-console.log("match",match['Match-Status']);
         const matchStatus = match['Match-Status'] === 'إنتهت المباراة' ? 'status-finished'
             : match['Match-Status'] === 'المباراة تأجلت' ? 'status-postponed'
                 : match['Match-Status'] === 'المباراة الغيت' ? 'status-postponed'
                     : match['Match-Status'] === 'لم تبدأ' ? 'status-not-started'
                         : 'status-live';
-console.log("status",matchStatus);
-
-        const startTime = new Date(match['Time-Start']);
-        const now = new Date();
-        const diffInSeconds = (startTime - now) / 1000;
-
-        const shouldFetchStreams =
+        function convertTo24Hour(timeStr) {
+            const [time, modifier] = timeStr.split(' ');
+            let [hours, minutes] = time.split(':').map(Number);
+            if (modifier === 'م' && hours < 12) hours += 12;
+            if (modifier === 'ص' && hours === 12) hours = 0;
+            return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+        }
+        if (match['Match-Status'] === 'لم تبدأ' || match['Match-Status'] === 'المباراة تأجلت' || match['Match-Status'] === 'المباراة الغيت') {
+            const matchTimeStr = match['Match-Start-Time'];
+            const matchDateStr = match['match_date_time'];
+            let localTime = null;
+            if (matchTimeStr && matchDateStr) {
+                const datePart = matchDateStr.split(' ')[0];
+                const timePart = convertTo24Hour(matchTimeStr);
+                const fullDateTime = `${datePart}T${timePart}:00+02:00`;
+                const localTime = new Date(fullDateTime);
+                localTime = localTime;
+            }
+            const startTime = localTimeString;
+            const now = new Date();
+            const diffInSeconds = (startTime - now) / 1000;
+            const shouldFetchStreams =
             matchStatus === 'status-live' ||
             (matchStatus === 'status-not-started' && diffInSeconds <= 1200 && diffInSeconds > 0);
-        if (shouldFetchStreams) {
-            await fetchAndDisplayStreams(match);
+            if (shouldFetchStreams) {
+                await fetchAndDisplayStreams(match);
+            }
         }
         renderInfo(details['Match_Info'], details);
         renderLineup(details['Lineup'], match);
@@ -1391,6 +1371,7 @@ export {
     displayStandings,
     showNewsArticle,
 };
+
 
 
 
