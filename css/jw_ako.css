@@ -1,4 +1,6 @@
-
+.jw-video {
+            object-fit: fill !important;
+        }
     .jw-svg-icon-cc-off path,
 .jw-svg-icon-cc-on path {
     display: none;
@@ -1320,4 +1322,5 @@ Icono de Audio.
 .jw-breakpoint-7 .jw-text-elapsed {
     font-size: 0.95em !important;
 }
+
 
