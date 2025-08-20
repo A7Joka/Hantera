@@ -10,7 +10,6 @@ function loadAllData() {
 // FINAL STABLE VERSION - PART 1 of 4
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
 import { getFirestore, doc, setDoc, collection, getDocs, addDoc, deleteDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
 // --- CONFIG & GLOBAL VARS ---
 const firebaseConfig = {
     apiKey: "AIzaSyB6ACvhgth3VXhoJJnNOZfIQBpXlTVWcGE",
@@ -1251,12 +1250,86 @@ tabContentContainer.addEventListener('click', (e) => {
       height: "100%",
       autostart: true
     };
-    if (button.dataset.type === 'dash-drm') {
-      setupConfig.drm = { "clearkey": { "keyId": button.dataset.keyid, "key": button.dataset.key } };
-    }
-    const playerHtml = `<!DOCTYPE html><html><head><link rel="stylesheet" href="./css/jw_ako.css"><style>body,html{margin:0;padding:0;height:100%;width:100%;background-color:#000;}#player{height:100%!important;width:100%!important;}</style><script src="https://ssl.p.jwpcdn.com/player/v/8.36.5/jwplayer.js"><\/script><script>jwplayer.key = 'XSuP4qMl+9tK17QNb+4+th2Pm9AWgMO/cYH8CI0HGGr7bdjo';<\/script></head><body><div id="player"></div><script>jwplayer("player").setup(${JSON.stringify(setupConfig)});<\/script></body></html>`;
+if (button.dataset.type === 'dash-drm') {
+  setupConfig.drm = {
+    [button.dataset.keyid]: button.dataset.key
+  };
+} else {
+  setupConfig.drm = {
+    "f1dac2f937c9338f8e7c33963d06c489": "8ab19f639fe1552c7463f4b978c41c9d"
+  };
+}
+
+    const playerHtml = `<!DOCTYPE html>
+<html dir='rtl' lang='ar'>
+<head>
+<meta charset='UTF-8'/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>X EGYPT - Player</title>
+<link href='' rel='icon' type='image/png'/>
+<meta name="referrer" content="no-referrer" />
+<link rel="stylesheet" href="./css/shaka_PL.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/shaka-player/4.7.13/shaka-player.compiled.js"></script>
+<style>body,html{margin:0;padding:0;height:100%;width:100%;background-color:#000;}#player{height:100%!important;width:100%!important;}</style>
+</head>
+<body>
+
+<div id="player-container">
+    <div id="loading-spinner"></div>
+    <div id="error-overlay">
+        <i data-feather="alert-triangle"></i>
+        <h3 id="error-title">فشل تحميل البث</h3>
+        <p id="error-message">قد يكون البث متوقف حاليًا أو توجد مشكلة في الشبكة. يرجى المحاولة لاحقاً.</p>
+    </div>
+
+    <div id="video-wrapper">
+          <video autoplay muted data-shaka-player poster="#" id='video' style='width:100%;height:100%;object-fit: fill !important;'></video>
+    </div>
+
+    <div id="quality-popup" class="popup-menu"><ul id="quality-list" class="popup-menu-list"></ul></div>
+    <div id="audio-popup" class="popup-menu"><ul id="audio-list" class="popup-menu-list"></ul></div>
+
+    <div id="center-controls" class="controls-overlay visible">
+        <button class="center-control-button" id="seek-backward-center-btn" title="تقديم 10 ثواني"><i data-feather="fast-forward"></i></button>
+        <button class="center-control-button" id="play-pause-center-btn" title="تشغيل/إيقاف"><i data-feather="play"></i></button>
+        <button class="center-control-button" id="seek-forward-center-btn" title="رجوع 10 ثواني"><i data-feather="rewind"></i></button>
+    </div>
+    
+    <div id="bottom-controls-container" class="controls-overlay">
+        <div class="progress-bar-container"><div class="progress-bar"><div class="progress-played"></div></div></div>
+        <div class="bottom-controls">
+            <div class="controls-left">
+                <button class="control-button" id="play-pause-btn" title="تشغيل/إيقاف"><i data-feather="play"></i></button>
+                <button class="control-button" id="mute-btn" title="كتم الصوت"><i data-feather="volume-2"></i></button>
+                <button id="quality-btn" class="control-button" title="الجودة"><i data-feather="settings"></i></button>
+                <button id="audio-btn" class="control-button" title="الصوت"><i data-feather="headphones"></i></button>
+                <div id="live-indicator"></div>
+            </div>
+            <div class="controls-right">
+                <button class="control-button" id="pip-btn" title="نافذة ضمن نافذة"><i data-feather="airplay"></i></button>
+                <button class="control-button" id="expand-btn" title="تغيير وضع العرض"></button>
+                <button class="control-button" id="fullscreen-btn" title="ملء الشاشة"><i data-feather="maximize"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="./js/player.js"></script>
+</body>
+</html>`;
     videoPlayerIframe.srcdoc = playerHtml;
     videoPlayerModal.style.display = 'flex';
+        videoPlayerIframe.onload = () => {
+            videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+            videoPlayerIframe.onload = null;
+        };
+        if (videoPlayerIframe.contentDocument.readyState === 'complete') {
+            videoPlayerIframe.contentWindow.postMessage(setupConfig, '*');
+        }
   }
 });
 function sanitizeInput(input) {
